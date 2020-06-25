@@ -91,6 +91,7 @@ ax5 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference_rela
 
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force difference between the
 # depleted and undepleted BSP compositions where outliers outside the 25th and 75th percentile are removed
+# This is the same figure as ax4 but with an additional argument in the function below.
 ax6 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
     oxide_x="SiO2",
     oxide_y='FeO',
@@ -104,6 +105,7 @@ ax6 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
 
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force difference percentages
 # between the depleted and undepleted BSP compositions where outliers outside the 25th and 75th percentile are removed
+# This is the same figure as ax4 but with 2 additional arguments in the function below.
 ax7 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
     oxide_x="SiO2",
     oxide_y='FeO',
