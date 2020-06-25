@@ -144,17 +144,19 @@ class Inspect:
             if row[0].lower() == "sun":
                 return row
 
+    def __calc_buoyancy_with_depth(self, density_differentials, d, plate_thickness=10 * 1000, gravity=9.8):
+        return integrate.simps(density_differentials, d) * 1000 * 1000 * plate_thickness * gravity
+
     def __compute_buoyancy_at_depth(self, density_differentials, plate_thickness=10 * 1000, gravity=9.8):
         buoyancies = []
         for index, i in enumerate(density_differentials):
             if index < len(density_differentials) - 1:
                 sublist_density_diffs = density_differentials[0:index + 1]
                 d = DEPTHS[0:index + 1]
-                buoyancy_force = integrate.simps(sublist_density_diffs, d) * 1000 * 1000 * plate_thickness * gravity
+                buoyancy_force = self.__calc_buoyancy_with_depth(density_differentials=sublist_density_diffs, d=d)
                 buoyancies.append(buoyancy_force)
             else:
-                buoyancy_force = integrate.simps(density_differentials,
-                                                 DEPTHS) * 1000 * 1000 * plate_thickness * gravity
+                buoyancy_force = self.__calc_buoyancy_with_depth(density_differentials=density_differentials, d=DEPTHS)
                 buoyancies.append(buoyancy_force)
         return buoyancies
 

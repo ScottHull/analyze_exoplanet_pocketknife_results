@@ -7,58 +7,6 @@ from composition import Inspect as InspectComposition
 from buoyancy import Inspect as InspectBuoyancy
 
 
-def pair_composition_to_buoyancy(buoyancy, composition, oxide):
-    pairs = []
-    for star in buoyancy.keys():
-        final_buoyancy = buoyancy[star][-1]
-        c = composition[star][oxide.lower()]
-        pairs.append((c, final_buoyancy))
-    return pairs
-
-def pair_compositions_and_map_buoyancy(buoyancy, composition, oxide_x, oxide_y, special_star=None):
-    pairs = []
-    if special_star is None:
-        for star in buoyancy.keys():
-            final_buoyancy = buoyancy[star][-1]
-            c_x = composition[star][oxide_x.lower()]
-            c_y = composition[star][oxide_y.lower()]
-            pairs.append((c_x, c_y, final_buoyancy))
-    else:
-        star = special_star
-        final_buoyancy = buoyancy[star][-1]
-        c_x = composition[star][oxide_x.lower()]
-        c_y = composition[star][oxide_y.lower()]
-        pairs.append((c_x, c_y, final_buoyancy))
-    return pairs
-
-def pair_compositions_and_map_buoyancy_relative_to_earth(buoyancy, composition, oxide_x, oxide_y, special_star=None):
-    pairs = []
-    earth_buoyancy = buoyancy['Sun'][-1]
-    if special_star is None:
-        for star in buoyancy.keys():
-            final_buoyancy = buoyancy[star][-1]
-            buoyancy_relative = None
-            if final_buoyancy > earth_buoyancy:
-                buoyancy_relative = 1  # more buoyant than earth
-            else:
-                buoyancy_relative = 0  # less buoyant than earth
-            c_x = composition[star][oxide_x.lower()]
-            c_y = composition[star][oxide_y.lower()]
-            pairs.append((c_x, c_y, final_buoyancy, buoyancy_relative))
-    else:
-        star = special_star
-        final_buoyancy = buoyancy[star][-1]
-        buoyancy_relative = None
-        if final_buoyancy > earth_buoyancy:
-            buoyancy_relative = 1  # more buoyant than earth
-        else:
-            buoyancy_relative = 0  # less buoyant than earth
-        c_x = composition[star][oxide_x.lower()]
-        c_y = composition[star][oxide_y.lower()]
-        pairs.append((c_x, c_y, final_buoyancy, buoyancy_relative))
-    return pairs
-
-
 compositions = InspectComposition(path="/Users/scotthull/Desktop/exoplanets/Depleted_Lithosphere_Compositions")
 buoyancies = InspectBuoyancy(reg_path="/Users/scotthull/Desktop/exoplanets/Densities/BSP_MORB",
                              depleted_path="/Users/scotthull/Desktop/exoplanets/Densities/Depleted_Lithosphere")
