@@ -19,7 +19,7 @@ Step 2: Collect and organize buoyancy forces.
 """
 
 b = Organize.get_all_buoyancy_forces(buoyancies=buoyancies)
-print(b.keys())
+print(b.keys())  # shows the different dictionary keys available for use in the buoyancy return
 
 """
 Step 2: Collect and organize compositional depletion (oxide weight percent).
@@ -28,10 +28,10 @@ Step 2: Collect and organize compositional depletion (oxide weight percent).
 """
 
 d = Organize.get_all_depletions(compositions=compositions)
-print(d.keys())
+print(d.keys())  # shows the different dictionary keys available for use in the compositional depletion percent return
 
 """
-Step 3: Plot Results
+Step 3: Plot Example Results.
 """
 
 # define the two available oxides that I want to plot
@@ -40,16 +40,16 @@ oxide_y = "FeO"
 
 # Produces a graph of depletion percent vs. buoyancy force
 ax1 = Plots.plot_percent_depletion_vs_buoyancy_force(
-    oxide=oxide_x,
-    buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
-    depletions={**d['adibekyan_f1400_depletion'], **d['kepler_f1400_depletion']},
-    title="Undepleted BSP w/ MORB F1400K (T_0=1200K)"
+    oxide=oxide_x,  # x-axis oxide
+    buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},  # combine the Adibekyan and Kepler data
+    depletions={**d['adibekyan_f1400_depletion'], **d['kepler_f1400_depletion']},  # combine the Adibekyan and Kepler data
+    title="Undepleted BSP w/ MORB F1400K (T_0=1200K)"  # title of the figure
 )
 
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force
 ax2 = Plots.plot_two_compositions_and_colormap_buoyancy(
-    oxide_x="SiO2",
-    oxide_y='FeO',
+    oxide_x=oxide_x,  # x-axis oxide
+    oxide_y=oxide_y,  # y-axis oxide
     buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
     depletions={**d['adibekyan_f1400_depletion'], **d['kepler_f1400_depletion']},
     title="Undepleted BSP w/ MORB F1400K (T_0=1200K)"
@@ -58,8 +58,8 @@ ax2 = Plots.plot_two_compositions_and_colormap_buoyancy(
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force relative to the
 # Earth value in the dataset
 ax3 = Plots.plot_two_compositions_and_colormap_buoyancy_relative_to_earth(
-    oxide_x="SiO2",
-    oxide_y='FeO',
+    oxide_x=oxide_x,
+    oxide_y=oxide_y,
     buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
     depletions={**d['adibekyan_f1400_depletion'], **d['kepler_f1400_depletion']},
     title="Undepleted BSP w/ MORB F1400K (T_0=1200K) (Relative to Earth Model in This Dataset)"
@@ -68,8 +68,8 @@ ax3 = Plots.plot_two_compositions_and_colormap_buoyancy_relative_to_earth(
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force difference between the
 # depleted and undepleted BSP compositions
 ax4 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
-    oxide_x="SiO2",
-    oxide_y='FeO',
+    oxide_x=oxide_x,
+    oxide_y=oxide_y,
     undepleted_buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
     depleted_buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
                          **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
@@ -80,8 +80,8 @@ ax4 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force difference between the
 # depleted and undepleted BSP compositions relative to the Earth value in the dataset
 ax5 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference_relative_to_earth(
-    oxide_x="SiO2",
-    oxide_y='FeO',
+    oxide_x=oxide_x,
+    oxide_y=oxide_y,
     undepleted_buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
     depleted_buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
                          **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
@@ -93,29 +93,31 @@ ax5 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference_rela
 # depleted and undepleted BSP compositions where outliers outside the 25th and 75th percentile are removed
 # This is the same figure as ax4 but with an additional argument in the function below.
 ax6 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
-    oxide_x="SiO2",
-    oxide_y='FeO',
+    oxide_x=oxide_x,
+    oxide_y=oxide_y,
     undepleted_buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
     depleted_buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
                          **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
     depletions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
     title="Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K) (Outliers Removed)",
-    remove_outliers=True
+    remove_outliers=True  # removes compositional outliers outside of the 25th and 75th percentile
 )
 
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force difference percentages
 # between the depleted and undepleted BSP compositions where outliers outside the 25th and 75th percentile are removed
 # This is the same figure as ax4 but with 2 additional arguments in the function below.
+# Percent difference is defined as (depleted - undepleted) / undepleted * 100
+# i.e. a positive percentage means the depleted BSP is more buoyant than the undepleted BSP
 ax7 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
-    oxide_x="SiO2",
-    oxide_y='FeO',
+    oxide_x=oxide_x,
+    oxide_y=oxide_y,
     undepleted_buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
     depleted_buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
                          **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
     depletions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
     title="Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K) (Outliers Removed)",
     remove_outliers=True,
-    percentages=True
+    percentages=True  # returns the percent difference in buoyancy force between the depleted and undepleted BSP
 )
 
 plt.show()
