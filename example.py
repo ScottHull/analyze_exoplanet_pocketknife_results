@@ -37,14 +37,14 @@ Step 3: Plot Example Results.
 
 # define the two available oxides that I want to plot
 oxide_x = "SiO2"
-oxide_y = "MgO"
+oxide_y = "FeO"
 
 # Produces a graph of depletion percent vs. buoyancy force
 ax1 = Plots.plot_percent_depletion_vs_buoyancy_force(
     oxide=oxide_x,  # x-axis oxide
     buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},  # combine the Adibekyan and Kepler data
     depletions={**d['adibekyan_f1400_depletion'], **d['kepler_f1400_depletion']},  # combine the Adibekyan and Kepler data
-    title="Undepleted BSP w/ MORB F1400K (T_0=1200K)"  # title of the figure
+    title="Example 1: Undepleted BSP w/ MORB F1400K (T_0=1200K)"  # title of the figure
 )
 
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force
@@ -53,7 +53,7 @@ ax2 = Plots.plot_two_compositions_and_colormap_buoyancy(
     oxide_y=oxide_y,  # y-axis oxide
     buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
     depletions={**d['adibekyan_f1400_depletion'], **d['kepler_f1400_depletion']},
-    title="Undepleted BSP w/ MORB F1400K (T_0=1200K)"
+    title="Example 2: Undepleted BSP w/ MORB F1400K (T_0=1200K)"
 )
 
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force relative to the
@@ -63,7 +63,7 @@ ax3 = Plots.plot_two_compositions_and_colormap_buoyancy_relative_to_earth(
     oxide_y=oxide_y,
     buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
     depletions={**d['adibekyan_f1400_depletion'], **d['kepler_f1400_depletion']},
-    title="Undepleted BSP w/ MORB F1400K (T_0=1200K) (Relative to Earth Model in This Dataset)"
+    title="Example 3: Undepleted BSP w/ MORB F1400K (T_0=1200K) (Relative to Earth Model in This Dataset)"
 )
 
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force difference between the
@@ -75,7 +75,7 @@ ax4 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
     depleted_buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
                          **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
     depletions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
-    title="Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K)"
+    title="Example 4: Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K)"
 )
 
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force difference between the
@@ -87,7 +87,7 @@ ax5 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference_rela
     depleted_buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
                          **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
     depletions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
-    title="Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K) (Relative to Earth Model in This Dataset)"
+    title="Example 5: Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K) (Relative to Earth Model in This Dataset)"
 )
 
 # Produces a graph where two depletion percentages are plotted and colormapped to buoyancy force difference between the
@@ -100,7 +100,7 @@ ax6 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
     depleted_buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
                          **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
     depletions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
-    title="Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K) (Outliers Removed)",
+    title="Example 6: Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K) (Outliers Removed)",
     remove_outliers=True  # removes compositional outliers outside of the 25th and 75th percentile
 )
 
@@ -116,7 +116,7 @@ ax7 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
     depleted_buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
                          **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
     depletions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
-    title="Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K) (Outliers Removed)",
+    title="Example 7: Undepleted vs. Depleted BSP w/ MORB F1400K (T_0=1200K) (Outliers Removed)",
     remove_outliers=True,
     percentages=True  # returns the percent difference in buoyancy force between the depleted and undepleted BSP
 )
@@ -124,14 +124,15 @@ ax7 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
 ax8 = Plots.plot_buoyancy_force_as_function_of_depth(depth=DEPTHS,
                                                    buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
                          **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
-                                                   title="depleted_f1400_1400_morb_1200_buoyancies")
+                                                   title="Example 8: Net Buoyancy Force as a Function of Depth (MORB F1400K (T_0=1200K)")
 
 ax9 = Plots.plot_crossover_depths(buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
                                 compositions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
-                                oxide=oxide_x, title="f1400_1200_buoyancies")
+                                oxide=oxide_x, title="Example 9: BSP Oxide Depletion % vs. Positive-to-Negative-Buoyancy Crossover Depth (MORB F1400K (T_0=1200K)")
 
 ax10 = Plots.plot_two_oxides_against_crossover_depth(buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
                                 compositions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
-                                oxide_x=oxide_x, oxide_y=oxide_y, title="f1400_1200_buoyancies")
+                                oxide_x=oxide_x, oxide_y=oxide_y,
+                                                     title="Example 10: BSP Oxide-Oxide Depletion % With Colormapped Crossover Depth (MORB F1400K (T_0=1200K)")
 
 plt.show()
