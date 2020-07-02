@@ -12,7 +12,7 @@ Step 1: Calculate compositions (oxide wt%) and buoyancy forces.
 compositions = InspectComposition(path="exoplanets/Depleted_Lithosphere_Compositions")
 # read in densities and compositions
 buoyancies = InspectBuoyancy(reg_path="exoplanets/Densities/BSP_MORB",
-                             depleted_path="/Users/scotthull/Desktop/exoplanets/Densities/Depleted_Lithosphere")
+                             depleted_path="exoplanets/Densities/Depleted_Lithosphere")
 
 """
 Step 2: Collect and organize buoyancy forces.

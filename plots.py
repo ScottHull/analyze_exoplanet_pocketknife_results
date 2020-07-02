@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from sort import Sort, Organize, Clean
 import numpy as np
+from buoyancy import DEPTHS
 from matplotlib.patches import Ellipse
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
@@ -141,4 +142,63 @@ class Plots:
         return cls.plot_two_compositions_and_colormap_buoyancy_relative_to_earth(oxide_x=oxide_x, oxide_y=oxide_y,
                                                                buoyancies=buoyancy_differences,
                                                                depletions=depletions, title=title)
+
+
+    @classmethod
+    def plot_buoyancy_force_as_function_of_depth(cls, depth, buoyancies, title):
+        ax = plt.figure().add_subplot(111)
+        earth_buoyancy = buoyancies['Sun']
+        FOUND_GOOD = False
+        FOUND_BAD = False
+        for s in buoyancies.keys():
+            b = buoyancies[s]
+            if b[-1] <= earth_buoyancy[-1]:
+                if not FOUND_GOOD:
+                    ax.plot(depth, b, color='blue', label="Buoyancy <= Earth (Good!)")
+                    FOUND_GOOD = True
+                else:
+                    ax.plot(depth, b, color='blue')
+            else:
+                if not FOUND_BAD:
+                    ax.plot(depth, b, color='red', label="Buoyancy > Earth (Bad!)")
+                    FOUND_BAD = True
+                else:
+                    ax.plot(depth, b, color='red')
+        ax.plot(depth, earth_buoyancy, color='green', linewidth=2, label="Earth")
+        ax.set_xlabel("Depth (km)")
+        ax.set_ylabel("Buoyancy Force (N)")
+        ax.set_title(title)
+        ax.legend()
+        ax.grid()
+
+        return ax
+
+
+    @classmethod
+    def plot_crossover_depths(cls, buoyancies, compositions, oxide, title):
+        crossover_depths = Sort.get_crossover_depth(depths=DEPTHS, buoyancies=buoyancies)
+        paired_crossover_to_oxide = Organize.pair_crossover_depth_to_oxide(crossover_depths=crossover_depths,
+                                                                           oxide=oxide.lower(),
+                                                                           compositions=compositions)
+        crossovers = [paired_crossover_to_oxide[i][0] for i in paired_crossover_to_oxide.keys()]
+        comps = [paired_crossover_to_oxide[i][1] for i in paired_crossover_to_oxide.keys()]
+        ax = plt.figure().add_subplot(111)
+        ax.scatter(comps, crossovers, color='black', marker="+")
+        ax.set_xlabel("Negative to Positive Net Buoyancy Crossover Depth (km)")
+        ax.set_ylabel("{} Depletion %".format(oxide))
+        ax.set_title(title)
+        ax.grid()
+
+        return ax
+
+    @classmethod
+    def plot_two_oxides_against_crossover_depth(cls):
+        pass
+
+
+
+
+
+
+
 

@@ -63,6 +63,21 @@ class Sort:
         return pairs
 
 
+    @classmethod
+    def get_crossover_depth(cls, depths, buoyancies):
+        cross_depths = {}
+        for s in buoyancies.keys():
+            b = buoyancies[s]
+            for index, i in enumerate(b):
+                if i < 0:
+                    cross_depths.update({s: depths[index]})
+                    break
+                elif index == len(buoyancies) - 1:
+                    cross_depths.update({s: np.nan})
+                    break
+        return cross_depths
+
+
 class Organize:
 
     @classmethod
@@ -219,6 +234,16 @@ class Organize:
                 daughter_buoyancy = daughter_reservoir[parent_star]
                 buoyancy_differences.update({parent_star: [((x - y) / y) * 100.0 for x, y in zip(daughter_buoyancy, parent_buoyancy)]})
         return buoyancy_differences
+
+    @classmethod
+    def pair_crossover_depth_to_oxide(cls, crossover_depths, compositions, oxide):
+        pairs = {}
+        for s in crossover_depths.keys():
+            if s in compositions.keys():
+                c = crossover_depths[s]
+                o = compositions[s][oxide]
+                pairs.update({s: [c, o]})
+        return pairs
 
 class Clean:
 
