@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.stats import iqr
 
+
 class Sort:
 
     @classmethod
@@ -61,7 +62,6 @@ class Sort:
             c_y = composition[star][oxide_y.lower()]
             pairs.append((c_x, c_y, final_buoyancy, buoyancy_relative))
         return pairs
-
 
     @classmethod
     def get_crossover_depth(cls, depths, buoyancies):
@@ -162,14 +162,14 @@ class Organize:
     @classmethod
     def get_all_depletions(cls, compositions):
         adibekyan_f1400_depletion = compositions.get_depletion(parent_reservoir=compositions.adibekyan_bsp,
-                                                                    daughter_reservoir=compositions.adibekyan_morb_f1400)
+                                                               daughter_reservoir=compositions.adibekyan_morb_f1400)
         adibekyan_f1600_depletion = compositions.get_depletion(parent_reservoir=compositions.adibekyan_bsp,
-                                                                    daughter_reservoir=compositions.adibekyan_morb_f1600)
+                                                               daughter_reservoir=compositions.adibekyan_morb_f1600)
 
         kepler_f1400_depletion = compositions.get_depletion(parent_reservoir=compositions.kepler_bsp,
-                                                               daughter_reservoir=compositions.kepler_morb_f1400)
+                                                            daughter_reservoir=compositions.kepler_morb_f1400)
         kepler_f1600_depletion = compositions.get_depletion(parent_reservoir=compositions.kepler_bsp,
-                                                               daughter_reservoir=compositions.kepler_morb_f1600)
+                                                            daughter_reservoir=compositions.kepler_morb_f1600)
 
         adibekyan_depleted_f1400_depletion = compositions.get_depletion(
             parent_reservoir=compositions.adibekyan_depleted_bsp_f1400,
@@ -196,7 +196,6 @@ class Organize:
         kepler_bsp_depletion_f1600 = compositions.get_depletion(
             parent_reservoir=compositions.kepler_bsp,
             daughter_reservoir=compositions.kepler_depleted_bsp_f1600)
-
 
         return {
             'adibekyan_f1400_depletion': adibekyan_f1400_depletion,
@@ -232,7 +231,8 @@ class Organize:
             parent_buoyancy = parent_reservoir[parent_star]
             if parent_star in daughter_stars:
                 daughter_buoyancy = daughter_reservoir[parent_star]
-                buoyancy_differences.update({parent_star: [((x - y) / y) * 100.0 for x, y in zip(daughter_buoyancy, parent_buoyancy)]})
+                buoyancy_differences.update(
+                    {parent_star: [((x - y) / y) * 100.0 for x, y in zip(daughter_buoyancy, parent_buoyancy)]})
         return buoyancy_differences
 
     @classmethod
@@ -244,6 +244,18 @@ class Organize:
                 o = compositions[s][oxide]
                 pairs.update({s: [c, o]})
         return pairs
+
+    @classmethod
+    def pair_crossover_depth_to_two_oxides(cls, crossover_depths, compositions, oxide_x, oxide_y):
+        pairs = {}
+        for s in crossover_depths.keys():
+            if s in compositions.keys():
+                c = crossover_depths[s]
+                o_x = compositions[s][oxide_x]
+                o_y = compositions[s][oxide_y]
+                pairs.update({s: [c, o_x, o_y]})
+        return pairs
+
 
 class Clean:
 
