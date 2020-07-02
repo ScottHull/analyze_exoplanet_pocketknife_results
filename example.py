@@ -1,5 +1,6 @@
 from composition import Inspect as InspectComposition
 from buoyancy import Inspect as InspectBuoyancy
+from buoyancy import DEPTHS
 from sort import Sort, Organize
 from plots import Plots
 import matplotlib.pyplot as plt
@@ -36,7 +37,7 @@ Step 3: Plot Example Results.
 
 # define the two available oxides that I want to plot
 oxide_x = "SiO2"
-oxide_y = "FeO"
+oxide_y = "MgO"
 
 # Produces a graph of depletion percent vs. buoyancy force
 ax1 = Plots.plot_percent_depletion_vs_buoyancy_force(
@@ -119,5 +120,18 @@ ax7 = Plots.plot_two_compositions_and_colormap_depleted_buoyancy_difference(
     remove_outliers=True,
     percentages=True  # returns the percent difference in buoyancy force between the depleted and undepleted BSP
 )
+
+ax8 = Plots.plot_buoyancy_force_as_function_of_depth(depth=DEPTHS,
+                                                   buoyancies={**b['adibekyan_depleted_f1400_1400_morb_1200_buoyancies'],
+                         **b['kepler_depleted_f1400_1400_morb_1200_buoyancies']},
+                                                   title="depleted_f1400_1400_morb_1200_buoyancies")
+
+ax9 = Plots.plot_crossover_depths(buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
+                                compositions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
+                                oxide=oxide_x, title="f1400_1200_buoyancies")
+
+ax10 = Plots.plot_two_oxides_against_crossover_depth(buoyancies={**b['adibekyan_f1400_1200_buoyancies'], **b['kepler_f1400_1200_buoyancies']},
+                                compositions={**d['adibekyan_depleted_f1400_depletion'], **d['kepler_depleted_f1400_depletion']},
+                                oxide_x=oxide_x, oxide_y=oxide_y, title="f1400_1200_buoyancies")
 
 plt.show()
