@@ -4,6 +4,7 @@ import numpy as np
 from buoyancy import DEPTHS
 from matplotlib.patches import Ellipse
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from mpl_toolkits.mplot3d import Axes3D
 
 
 class Plots:
@@ -211,5 +212,67 @@ class Plots:
         ax.set_ylabel("{} Depletion %".format(oxide_y))
         ax.set_title(title)
         ax.grid()
+
+        return ax
+
+class Plots3D:
+
+    @classmethod
+    def plot_three_oxides_and_colormap_buoyancy(cls, compositions, buoyancies, oxide_x, oxide_y, oxide_z, title,
+                                                clean=False):
+        ax = Axes3D(plt.figure())
+        if clean:
+            c1 = Clean.remove_outliers_from_composition_dict(data=compositions, oxide=oxide_x.lower())
+            c2 = Clean.remove_outliers_from_composition_dict(data=c1, oxide=oxide_y.lower())
+            c3 = Clean.remove_outliers_from_composition_dict(data=c2, oxide=oxide_z.lower())
+            p = Organize.get_three_oxides_and_buoyancy_force(compositions=c3, buoyancies=buoyancies,
+                                                             oxide_x=oxide_x.lower(), oxide_y=oxide_y.lower(),
+                                                             oxide_z=oxide_z.lower())
+        else:
+            p = Organize.get_three_oxides_and_buoyancy_force(compositions=compositions, buoyancies=buoyancies,
+                                                             oxide_x=oxide_x.lower(), oxide_y=oxide_y.lower(),
+                                                             oxide_z=oxide_z.lower())
+        o_x = [p[i][0] for i in p.keys()]
+        o_y = [p[i][1] for i in p.keys()]
+        o_z = [p[i][2] for i in p.keys()]
+        b = [p[i][3] for i in p.keys()]
+        sc = ax.scatter(o_x, o_y, o_z, c=b, marker="+")
+        ax.set_xlabel("{} Depletion %".format(oxide_x))
+        ax.set_ylabel("{} Depletion %".format(oxide_y))
+        ax.set_zlabel("{} Depletion %".format(oxide_z))
+        ax.set_title(title)
+        cbar = plt.colorbar(sc, ax=ax)
+        cbar.set_label('Net Buoyancy Force (N)')
+
+        return ax
+
+
+    @classmethod
+    def plot_three_oxides_and_colormap_crossover_depth(cls, compositions, buoyancies, oxide_x, oxide_y, oxide_z, title,
+                                                clean=False):
+        ax = Axes3D(plt.figure())
+        crossover_depths = Sort.get_crossover_depth(depths=DEPTHS, buoyancies=buoyancies)
+        if clean:
+            c1 = Clean.remove_outliers_from_composition_dict(data=compositions, oxide=oxide_x.lower())
+            c2 = Clean.remove_outliers_from_composition_dict(data=c1, oxide=oxide_y.lower())
+            c3 = Clean.remove_outliers_from_composition_dict(data=c2, oxide=oxide_z.lower())
+            p = Organize.pair_crossover_depth_to_three_oxides(compositions=c3, crossover_depths=crossover_depths,
+                                                             oxide_x=oxide_x.lower(), oxide_y=oxide_y.lower(),
+                                                             oxide_z=oxide_z.lower())
+        else:
+            p = Organize.pair_crossover_depth_to_three_oxides(compositions=compositions, crossover_depths=crossover_depths,
+                                                             oxide_x=oxide_x.lower(), oxide_y=oxide_y.lower(),
+                                                             oxide_z=oxide_z.lower())
+        o_x = [p[i][0] for i in p.keys()]
+        o_y = [p[i][1] for i in p.keys()]
+        o_z = [p[i][2] for i in p.keys()]
+        b = [p[i][3] for i in p.keys()]
+        sc = ax.scatter(o_x, o_y, o_z, c=b, marker="+")
+        ax.set_xlabel("{} Depletion %".format(oxide_x))
+        ax.set_ylabel("{} Depletion %".format(oxide_y))
+        ax.set_zlabel("{} Depletion %".format(oxide_z))
+        ax.set_title(title)
+        cbar = plt.colorbar(sc, ax=ax)
+        cbar.set_label('Net Buoyancy Force (N)')
 
         return ax

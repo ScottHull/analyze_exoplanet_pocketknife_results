@@ -256,6 +256,29 @@ class Organize:
                 pairs.update({s: [c, o_x, o_y]})
         return pairs
 
+    @classmethod
+    def get_three_oxides_and_buoyancy_force(cls, compositions, buoyancies, oxide_x, oxide_y, oxide_z):
+        pairs = {}
+        for s in buoyancies.keys():
+            if s in compositions.keys():
+                o_x = compositions[s][oxide_x]
+                o_y = compositions[s][oxide_y]
+                o_z = compositions[s][oxide_z]
+                b = buoyancies[s][-1]
+                pairs.update({s: [o_x, o_y, o_z, b]})
+        return pairs
+
+    @classmethod
+    def pair_crossover_depth_to_three_oxides(cls, crossover_depths, compositions, oxide_x, oxide_y, oxide_z):
+        pairs = {}
+        for s in crossover_depths.keys():
+            if s in compositions.keys():
+                c = crossover_depths[s]
+                o_x = compositions[s][oxide_x]
+                o_y = compositions[s][oxide_y]
+                o_z = compositions[s][oxide_z]
+                pairs.update({s: [c, o_x, o_y, o_z]})
+        return pairs
 
 class Clean:
 
