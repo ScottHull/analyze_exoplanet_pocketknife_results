@@ -83,58 +83,68 @@ class Organize:
     @classmethod
     def get_all_buoyancy_forces(cls, buoyancies):
         adibekyan_f1400_1200_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.adibekyan_bsp_1600,
-                                                                  morb_file=buoyancies.adibekyan_morb_f1400_1200)
+                                                                  morb_file=buoyancies.adibekyan_morb_f1400_1200,
+                                                                  morb_name="adibekyan_morb_f1400_1200")
         adibekyan_f1400_1400_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.adibekyan_bsp_1600,
-                                                                  morb_file=buoyancies.adibekyan_morb_f1400_1400)
+                                                                  morb_file=buoyancies.adibekyan_morb_f1400_1400,
+                                                                  morb_name="adibekyan_morb_f1400_1400")
         adibekyan_f1600_1200_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.adibekyan_bsp_1600,
-                                                                  morb_file=buoyancies.adibekyan_morb_f1600_1200)
+                                                                  morb_file=buoyancies.adibekyan_morb_f1600_1200,
+                                                                  morb_name="adibekyan_morb_f1400_1400")
         adibekyan_f1600_1400_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.adibekyan_bsp_1600,
-                                                                  morb_file=buoyancies.adibekyan_morb_f1600_1400)
+                                                                  morb_file=buoyancies.adibekyan_morb_f1600_1400,
+                                                                  morb_name="adibekyan_morb_f1600_1400")
         adibekyan_f1600_1600_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.adibekyan_bsp_1600,
-                                                                  morb_file=buoyancies.adibekyan_morb_f1600_1600)
+                                                                  morb_file=buoyancies.adibekyan_morb_f1600_1600,
+                                                                  morb_name="adibekyan_morb_f1600_1600")
 
         kepler_f1400_1200_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
-                                                               morb_file=buoyancies.kepler_morb_f1400_1200)
+                                                               morb_file=buoyancies.kepler_morb_f1400_1200,
+                                                                  morb_name="kepler_morb_f1400_1200")
         kepler_f1400_1400_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
-                                                               morb_file=buoyancies.kepler_morb_f1400_1400)
+                                                               morb_file=buoyancies.kepler_morb_f1400_1400,
+                                                                  morb_name="kepler_morb_f1400_1400")
         kepler_f1600_1200_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
-                                                               morb_file=buoyancies.kepler_morb_f1600_1200)
+                                                               morb_file=buoyancies.kepler_morb_f1600_1200,
+                                                                  morb_name="kepler_morb_f1600_1200")
         kepler_f1600_1400_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
-                                                               morb_file=buoyancies.kepler_morb_f1600_1400)
+                                                               morb_file=buoyancies.kepler_morb_f1600_1400,
+                                                                  morb_name="kepler_morb_f1600_1400")
         kepler_f1600_1600_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
-                                                               morb_file=buoyancies.kepler_morb_f1600_1600)
+                                                               morb_file=buoyancies.kepler_morb_f1600_1600,
+                                                                  morb_name="kepler_morb_f1600_1600")
 
         adibekyan_depleted_f1400_1400_morb_1200_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.adibekyan_depleted_bsp_f1400_1400,
-            morb_file=buoyancies.adibekyan_morb_f1400_1200)
+            morb_file=buoyancies.adibekyan_morb_f1400_1200, morb_name="adibekyan_morb_f1400_1200")
         adibekyan_depleted_f1400_1400_morb_1400_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.adibekyan_depleted_bsp_f1400_1400,
-            morb_file=buoyancies.adibekyan_morb_f1400_1400)
+            morb_file=buoyancies.adibekyan_morb_f1400_1400, morb_name="adibekyan_morb_f1400_1400")
         adibekyan_depleted_f1600_1600_morb_1200_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.adibekyan_depleted_bsp_f1600_1600,
-            morb_file=buoyancies.adibekyan_morb_f1600_1200)
+            morb_file=buoyancies.adibekyan_morb_f1600_1200, morb_name="adibekyan_morb_f1600_1200")
         adibekyan_depleted_f1600_1600_morb_1400_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.adibekyan_depleted_bsp_f1600_1600,
-            morb_file=buoyancies.adibekyan_morb_f1600_1400)
+            morb_file=buoyancies.adibekyan_morb_f1600_1400, morb_name="adibekyan_morb_f1600_1400")
         adibekyan_depleted_f1600_1600_morb_1600_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.adibekyan_depleted_bsp_f1600_1600,
-            morb_file=buoyancies.adibekyan_morb_f1600_1600)
+            morb_file=buoyancies.adibekyan_morb_f1600_1600, morb_name="adibekyan_morb_f1600_1600")
 
         kepler_depleted_f1400_1400_morb_1200_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.kepler_depleted_bsp_f1400_1400,
-            morb_file=buoyancies.kepler_morb_f1400_1200)
+            morb_file=buoyancies.kepler_morb_f1400_1200, morb_name="kepler_morb_f1400_1200")
         kepler_depleted_f1400_1400_morb_1400_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.kepler_depleted_bsp_f1400_1400,
-            morb_file=buoyancies.kepler_morb_f1400_1400)
+            morb_file=buoyancies.kepler_morb_f1400_1400, morb_name="kepler_morb_f1400_1400")
         kepler_depleted_f1600_1600_morb_1200_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.kepler_depleted_bsp_f1600_1600,
-            morb_file=buoyancies.kepler_morb_f1600_1200)
+            morb_file=buoyancies.kepler_morb_f1600_1200, morb_name="kepler_morb_f1600_1200")
         kepler_depleted_f1600_1600_morb_1400_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.kepler_depleted_bsp_f1600_1600,
-            morb_file=buoyancies.kepler_morb_f1600_1400)
+            morb_file=buoyancies.kepler_morb_f1600_1400, morb_name="kepler_morb_f1600_1400")
         kepler_depleted_f1600_1600_morb_1600_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.kepler_depleted_bsp_f1600_1600,
-            morb_file=buoyancies.kepler_morb_f1600_1600)
+            morb_file=buoyancies.kepler_morb_f1600_1600, morb_name="kepler_morb_f1600_1600")
 
         return {
             'adibekyan_f1400_1200_buoyancies': adibekyan_f1400_1200_buoyancies,

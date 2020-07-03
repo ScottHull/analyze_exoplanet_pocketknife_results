@@ -1,6 +1,7 @@
 import os
 import csv
 from scipy import integrate
+from thickness import Thickness
 import matplotlib.pyplot as plt
 
 DEPTHS = [-1.0 * i for i in [0, 6, 19.7, 28.9, 36.4, 43.88, 51.34, 58.81, 66.36, 73.94, 81.5, 88.97, 96.45, 103.93, 111.41,
@@ -14,10 +15,13 @@ DEPTHS = [-1.0 * i for i in [0, 6, 19.7, 28.9, 36.4, 43.88, 51.34, 58.81, 66.36,
 
 class Inspect:
 
-    def __init__(self, reg_path, depleted_path):
+    def __init__(self, reg_path, depleted_path, get_actual_mass_fractions=True,
+                 initial_morb_mass_path="exoplanets/starting_morb_masses",
+                 final_morb_mass_path="exoplanets/final_morb_masses"):
         super().__init__()
         self.reg_path = reg_path
         self.depleted_path = depleted_path
+        self.__get_actual_mass_fractions = get_actual_mass_fractions
         self.adibekyan_bsp_1200 = None
         self.adibekyan_bsp_1400 = None
         self.adibekyan_bsp_1600 = None
@@ -50,6 +54,9 @@ class Inspect:
         self.kepler_morb_f1600_1600 = None
 
         self.__getfiles()
+
+        if self.__get_actual_mass_fractions:
+            self.thicknesses = Thickness(initial_mass_path=initial_morb_mass_path, final_mass_path=final_morb_mass_path)
 
     def __return_df(self, f):
         return list(csv.reader(open(f, 'r'), delimiter=","))
@@ -147,7 +154,7 @@ class Inspect:
     def __calc_buoyancy_with_depth(self, density_differentials, d, plate_thickness=10 * 1000, gravity=9.8):
         return integrate.simps(density_differentials, d) * 1000 * 1000 * plate_thickness * gravity
 
-    def __compute_buoyancy_at_depth(self, density_differentials, plate_thickness=10 * 1000, gravity=9.8):
+    def __compute_buoyancy_at_depth(self, density_differentials, f=10.0):
         buoyancies = []
         for index, i in enumerate(density_differentials):
             if index < len(density_differentials) - 1:
@@ -160,16 +167,35 @@ class Inspect:
                 buoyancies.append(buoyancy_force)
         return buoyancies
 
+    def __get_mass_fraction(self, morb_name):
+        if "adibekyan" in morb_name and "f1400" in morb_name:
+            return self.thicknesses.adibekyan_f1400_mass_fraction
+        elif "adibekyan" in morb_name and "f1600" in morb_name:
+            return self.thicknesses.adibekyan_f1600_mass_fraction
+        elif "kepler" in morb_name and "f1400" in morb_name:
+            return self.thicknesses.kepler_f1400_mass_fraction
+        elif "kepler" in morb_name and "f1600" in morb_name:
+            return self.thicknesses.kepler_f1600_mass_fraction
 
-    def get_buoyancy(self, bsp_file, morb_file):
+    def get_buoyancy(self, bsp_file, morb_file, morb_name=None):
         buoyancies = {}
+
+        if self.__get_actual_mass_fractions and morb_name is not None:
+            f = self.__get_mass_fraction(morb_name=morb_name)
 
         for bsp_row in bsp_file:
             star = bsp_row[0]
             morb_row = self.__get_morb_row(star=star, morb_file=morb_file)
             if len(bsp_row[1:]) == len(morb_row[1:]) == len(DEPTHS):
-                densitity_differnces = [float(x) - float(y) for x, y in zip(morb_row[1:], bsp_row[1:])]
-                buoyancy_force = self.__compute_buoyancy_at_depth(density_differentials=densitity_differnces)
+                density_differences = [float(x) - float(y) for x, y in zip(morb_row[1:], bsp_row[1:])]
+                if self.__get_actual_mass_fractions and morb_name is not None:
+                    if star in f.keys():
+                        buoyancy_force = self.__compute_buoyancy_at_depth(density_differentials=density_differences,
+                                                                      f=f[star])
+                    else:
+                        buoyancy_force = self.__compute_buoyancy_at_depth(density_differentials=density_differences)
+                else:
+                    buoyancy_force = self.__compute_buoyancy_at_depth(density_differentials=density_differences)
                 buoyancies.update({star: buoyancy_force})
 
         return buoyancies

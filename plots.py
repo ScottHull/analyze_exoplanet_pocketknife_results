@@ -273,6 +273,6 @@ class Plots3D:
         ax.set_zlabel("{} Depletion %".format(oxide_z))
         ax.set_title(title)
         cbar = plt.colorbar(sc, ax=ax)
-        cbar.set_label('Net Buoyancy Force (N)')
+        cbar.set_label('Crossover Depth (km)')
 
         return ax
