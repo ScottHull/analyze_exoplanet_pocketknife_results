@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from sort import Sort, Organize, Clean
 import numpy as np
+from buoyancy import DEPTHS
 from matplotlib.patches import Ellipse
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
@@ -92,13 +93,15 @@ class Plots:
         slope_greater_than = coeffs_greater_than[-2]
         xl_range = [min(x_greater_than + x_less_than), max(x_greater_than + x_less_than)]
         yl_greater_than = [(slope_greater_than * xx) + intercept_greater_than for xx in xl_range]
-        ax.scatter(x_greater_than, y_greater_than, c='red', marker="+", label="Buoyancy > Earth ({})".format(len(x_greater_than)))
+        ax.scatter(x_greater_than, y_greater_than, c='red', marker="+",
+                   label="Buoyancy > Earth ({})".format(len(x_greater_than)))
         ax.plot(xl_range, yl_greater_than, color='red', linestyle="--", label="Best Fit (> Earth)")
         coeffs_less_than = np.polyfit(x_less_than, y_less_than, 1)
         intercept_less_than = coeffs_less_than[-1]
         slope_less_than = coeffs_less_than[-2]
         yl_less_than = [(slope_less_than * xx) + intercept_less_than for xx in xl_range]
-        ax.scatter(x_less_than, y_less_than, c='blue', marker="+", label="Buoyancy <= Earth ({})".format(len(x_less_than)))
+        ax.scatter(x_less_than, y_less_than, c='blue', marker="+",
+                   label="Buoyancy <= Earth ({})".format(len(x_less_than)))
         ax.scatter(earth_mapped[0][0], earth_mapped[0][1],
                    marker='x', color='black', s=50, label='Sun-Derived Model')
         ax.plot(xl_range, yl_less_than, color='blue', linestyle="--", label="Best Fit (<= Earth)")
@@ -116,17 +119,18 @@ class Plots:
                                                                         remove_outliers=False, percentages=False):
         if percentages:
             buoyancy_differences = Organize.get_buoyancy_difference_percentages(parent_reservoir=depleted_buoyancies,
-                                                                     daughter_reservoir=undepleted_buoyancies)
+                                                                                daughter_reservoir=undepleted_buoyancies)
         else:
             buoyancy_differences = Organize.get_buoyancy_differences(parent_reservoir=depleted_buoyancies,
-                                                                 daughter_reservoir=undepleted_buoyancies)
+                                                                     daughter_reservoir=undepleted_buoyancies)
         if remove_outliers:
-            cleaned_depletions_oxide_x = Clean.remove_outliers_from_composition_dict(data=depletions, oxide=oxide_x.lower())
+            cleaned_depletions_oxide_x = Clean.remove_outliers_from_composition_dict(data=depletions,
+                                                                                     oxide=oxide_x.lower())
             cleaned_depletions_oxide_y = Clean.remove_outliers_from_composition_dict(data=cleaned_depletions_oxide_x,
                                                                                      oxide=oxide_y.lower())
             return cls.plot_two_compositions_and_colormap_buoyancy(oxide_x=oxide_x, oxide_y=oxide_y,
-                                                               buoyancies=buoyancy_differences,
-                                                               depletions=cleaned_depletions_oxide_y, title=title)
+                                                                   buoyancies=buoyancy_differences,
+                                                                   depletions=cleaned_depletions_oxide_y, title=title)
         else:
             return cls.plot_two_compositions_and_colormap_buoyancy(oxide_x=oxide_x, oxide_y=oxide_y,
                                                                    buoyancies=buoyancy_differences,
@@ -134,11 +138,78 @@ class Plots:
 
     @classmethod
     def plot_two_compositions_and_colormap_depleted_buoyancy_difference_relative_to_earth(cls, oxide_x, oxide_y,
-                                                                        undepleted_buoyancies, depleted_buoyancies,
+                                                                                          undepleted_buoyancies,
+                                                                                          depleted_buoyancies,
                                                                                           depletions, title=""):
         buoyancy_differences = Organize.get_buoyancy_differences(parent_reservoir=depleted_buoyancies,
                                                                  daughter_reservoir=undepleted_buoyancies)
         return cls.plot_two_compositions_and_colormap_buoyancy_relative_to_earth(oxide_x=oxide_x, oxide_y=oxide_y,
-                                                               buoyancies=buoyancy_differences,
-                                                               depletions=depletions, title=title)
+                                                                                 buoyancies=buoyancy_differences,
+                                                                                 depletions=depletions, title=title)
 
+    @classmethod
+    def plot_buoyancy_force_as_function_of_depth(cls, depth, buoyancies, title):
+        ax = plt.figure().add_subplot(111)
+        earth_buoyancy = buoyancies['Sun']
+        FOUND_GOOD = False
+        FOUND_BAD = False
+        for s in buoyancies.keys():
+            b = buoyancies[s]
+            if b[-1] <= earth_buoyancy[-1]:
+                if not FOUND_GOOD:
+                    ax.plot(depth, b, color='blue', label="Buoyancy <= Earth (Good!)")
+                    FOUND_GOOD = True
+                else:
+                    ax.plot(depth, b, color='blue')
+            else:
+                if not FOUND_BAD:
+                    ax.plot(depth, b, color='red', label="Buoyancy > Earth (Bad!)")
+                    FOUND_BAD = True
+                else:
+                    ax.plot(depth, b, color='red')
+        ax.plot(depth, earth_buoyancy, color='green', linewidth=2, label="Earth")
+        ax.set_xlabel("Depth (km)")
+        ax.set_ylabel("Buoyancy Force (N)")
+        ax.set_title(title)
+        ax.legend()
+        ax.grid()
+
+        return ax
+
+    @classmethod
+    def plot_crossover_depths(cls, buoyancies, compositions, oxide, title):
+        crossover_depths = Sort.get_crossover_depth(depths=DEPTHS, buoyancies=buoyancies)
+        paired_crossover_to_oxide = Organize.pair_crossover_depth_to_oxide(crossover_depths=crossover_depths,
+                                                                           oxide=oxide.lower(),
+                                                                           compositions=compositions)
+        crossovers = [paired_crossover_to_oxide[i][0] for i in paired_crossover_to_oxide.keys()]
+        comps = [paired_crossover_to_oxide[i][1] for i in paired_crossover_to_oxide.keys()]
+        ax = plt.figure().add_subplot(111)
+        ax.scatter(comps, crossovers, color='black', marker="+")
+        ax.set_xlabel("Negative to Positive Net Buoyancy Crossover Depth (km)")
+        ax.set_ylabel("{} Depletion %".format(oxide))
+        ax.set_title(title)
+        ax.grid()
+
+        return ax
+
+    @classmethod
+    def plot_two_oxides_against_crossover_depth(cls, buoyancies, compositions, oxide_x, oxide_y, title):
+        crossover_depths = Sort.get_crossover_depth(depths=DEPTHS, buoyancies=buoyancies)
+        paired_crossover_to_oxide = Organize.pair_crossover_depth_to_two_oxides(crossover_depths=crossover_depths,
+                                                                                oxide_x=oxide_x.lower(),
+                                                                                oxide_y=oxide_y.lower(),
+                                                                                compositions=compositions)
+        o_x = [paired_crossover_to_oxide[i][0] for i in paired_crossover_to_oxide.keys()]
+        o_y = [paired_crossover_to_oxide[i][1] for i in paired_crossover_to_oxide.keys()]
+        c_d = [paired_crossover_to_oxide[i][2] for i in paired_crossover_to_oxide.keys()]
+        ax = plt.figure().add_subplot(111)
+        sc = ax.scatter(o_x, o_y, c=c_d, marker="+", cmap='viridis')
+        cbar = plt.colorbar(sc, ax=ax)
+        cbar.set_label('Crossover Depth (km)')
+        ax.set_xlabel("{} Depletion %".format(oxide_x))
+        ax.set_ylabel("{} Depletion %".format(oxide_y))
+        ax.set_title(title)
+        ax.grid()
+
+        return ax
