@@ -223,6 +223,32 @@ class Organize:
         }
 
     @classmethod
+    def get_all_compositions(cls, compositions):
+        adibekyan_bsp = compositions.get_composition(compositions.adibekyan_bsp)
+        adibekyan_morb_f1400 = compositions.get_composition(compositions.adibekyan_morb_f1400)
+        adibekyan_morb_f1600 = compositions.get_composition(compositions.adibekyan_morb_f1600)
+        adibekyan_depleted_bsp_f1400 = compositions.get_composition(compositions.adibekyan_depleted_bsp_f1400)
+        adibekyan_depleted_bsp_f1600 = compositions.get_composition(compositions.adibekyan_depleted_bsp_f1600)
+        kepler_bsp = compositions.get_composition(compositions.kepler_bsp)
+        kepler_morb_f1400 = compositions.get_composition(compositions.kepler_morb_f1400)
+        kepler_morb_f1600 = compositions.get_composition(compositions.kepler_morb_f1600)
+        kepler_depleted_bsp_f1400 = compositions.get_composition(compositions.kepler_depleted_bsp_f1400)
+        kepler_depleted_bsp_f1600 = compositions.get_composition(compositions.kepler_depleted_bsp_f1600)
+
+        return {
+            "adibekyan_bsp": adibekyan_bsp,
+            "adibekyan_morb_f1400": adibekyan_morb_f1400,
+            "adibekyan_morb_f1600": adibekyan_morb_f1600,
+            "adibekyan_depleted_bsp_f1400": adibekyan_depleted_bsp_f1400,
+            "adibekyan_depleted_bsp_f1600": adibekyan_depleted_bsp_f1600,
+            "kepler_bsp": kepler_bsp,
+            "kepler_morb_f1400": kepler_morb_f1400,
+            "kepler_morb_f1600": kepler_morb_f1600,
+            "kepler_depleted_bsp_f1400": kepler_depleted_bsp_f1400,
+            "kepler_depleted_bsp_f1600": kepler_depleted_bsp_f1600
+        }
+
+    @classmethod
     def get_buoyancy_differences(cls, parent_reservoir, daughter_reservoir):
         buoyancy_differences = {}
         daughter_stars = daughter_reservoir.keys()

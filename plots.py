@@ -215,6 +215,20 @@ class Plots:
 
         return ax
 
+    @classmethod
+    def plot_compositional_profile_and_disappearances(cls, profile, mineral_temps, oxide, title="", appearance_or_disappearance='appearance'):
+        ax = plt.figure().add_subplot(111)
+        ax.plot(profile['temperature'], profile[oxide.lower()], color='red', linewidth=2.0)
+        for i in mineral_temps.keys():
+            ax.axvline(mineral_temps[i][appearance_or_disappearance], linewidth=2.0, color="black", linestyle="--")
+            ax.text(mineral_temps[i][appearance_or_disappearance] + 2, (max(profile[oxide.lower()])) - 5, i, rotation=180+90)
+        ax.set_xlabel("Temperature (C)")
+        ax.set_ylabel("{} wt%".format(oxide))
+        ax.set_title(title)
+        ax.grid()
+
+        return ax
+
 class Plots3D:
 
     @classmethod

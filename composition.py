@@ -1,7 +1,6 @@
 import os
 import csv
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 class Compositions:
@@ -24,6 +23,7 @@ class Inspect(Compositions):
     def __init__(self, path):
         super().__init__()
         self.path = path
+        self.__melts_path = "exoplanets/MELTS_Outputs"
 
         self.__read_files()
 
@@ -120,3 +120,96 @@ class Inspect(Compositions):
                 depletion_percentages.update({star: depletion_pct})
 
         return depletion_percentages
+
+    def get_composition(self, df):
+        d = {}
+        for row in df.index:
+            star = df['Star'][row]
+            feo = df['FeO'][row]
+            na2o = df['Na2O'][row]
+            mgo = df['MgO'][row]
+            al2o3 = df['Al2O3'][row]
+            sio2 = df['SiO2'][row]
+            cao = df['CaO'][row]
+            tio2 = df['TiO2'][row]
+
+            d.update({star: {
+                'feo': feo,
+                'na2o': na2o,
+                'mgo': mgo,
+                'al2o3': al2o3,
+                'sio2': sio2,
+                'cao': cao,
+                'tio2': tio2
+            }})
+
+        return d
+
+    def __get_dir_extension(self, keywords):
+        if "adibekyan" in keywords and "bsp" in keywords:
+            return "Adibekyan_Star_Compositions_Completed_BSP_MELTS_Files"
+        elif "adibekyan" in keywords and "f1400" in keywords:
+            return "Adibekyan_Star_Compositions_F1400_Completed_MORB_MELTS_Files"
+        elif "adibekyan" in keywords and "f1600" in keywords:
+            return "Adibekyan_Star_Compositions_F1600_Completed_MORB_MELTS_Files"
+        elif "kepler" in keywords and "bsp" in keywords:
+            return "Kepler_Star_Compositions_Completed_BSP_MELTS_Files"
+        elif "kepler" in keywords and "f1400" in keywords:
+            return "Kepler_Star_Compositions_F1400_Completed_MORB_MELTS_Files"
+        elif "kepler" in keywords and "f1600" in keywords:
+            return "Kepler_Star_Compositions_F1600_Completed_MORB_MELTS_Files"
+
+    def __map_oxide_to_indices(self, header_row, oxides):
+        d = {}
+        for i in oxides:
+            d.update({i.lower(): header_row.index(i)})
+        return d
+
+    def get_liquid_compositional_profile_of_star(self, star, name_keywords=None):
+        if name_keywords is None:
+            name_keywords = ["Adibekyan", "BSP"]
+        name_keywords = [i.lower() for i in name_keywords]
+        d = {
+            "feo": [],
+            "na2o": [],
+            "mgo": [],
+            "al2o3": [],
+            "sio2": [],
+            "cao": [],
+            "tio2": [],
+            "temperature": []
+        }
+
+        all_oxides = ["FeO", "Na2O", "MgO", "Al2O3", "SiO2", "CaO", "TiO2", "Temperature"]
+
+        files = []
+        fnames = []
+        for dirname, dirnames, f in os.walk(self.__melts_path + "/{}".format(self.__get_dir_extension(keywords=name_keywords))):
+            for i in f:
+                files.append(dirname + "/" + i)
+                fnames.append(i)
+        for index, i in enumerate(fnames):
+            f = files[index]
+            if str(star) in str(f):
+                FOUND = False
+                with open(f, 'r') as infile:
+                    reader = csv.reader(infile, delimiter=",")
+                    mapped_indices = {}
+                    for row in reader:
+                        if len(row) > 0:
+                            if "liquid_0" in row[0]:
+                                header = list(next(reader))
+                                mapped_indices = self.__map_oxide_to_indices(header_row=header,
+                                                                             oxides=all_oxides)
+                                FOUND = True
+                            elif FOUND:
+                                for j in mapped_indices.keys():
+                                    d[j].append(float(row[mapped_indices[j]]))
+                        elif FOUND is True:
+                            if len(row) == 0:
+                                infile.close()
+                                break
+        return d
+
+
+
