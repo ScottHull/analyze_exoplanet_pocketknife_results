@@ -152,6 +152,7 @@ class Plots:
         earth_buoyancy = buoyancies['Sun']
         FOUND_GOOD = False
         FOUND_BAD = False
+        depth = [-1 * i for i in depth]
         for s in buoyancies.keys():
             b = buoyancies[s]
             if b[-1] <= earth_buoyancy[-1]:
@@ -226,7 +227,7 @@ class Plots:
         }
         max_y_for_text = []
         for i in profile.keys():
-            if i != "temperature":
+            if i != "temperature" and i != "mass":
                 max_y_for_text += profile[i]
         max_y_for_text = max(max_y_for_text)
         ax = plt.figure().add_subplot(111)
@@ -259,9 +260,10 @@ class Plots:
         }
         max_y_for_text = []
         for i in profile.keys():
-            if i != "temperature":
+            if i != "temperature" and i != "mass":
                 max_y_for_text += profile[i]
         max_y_for_text = max(max_y_for_text)
+        print(max_y_for_text)
         ax = plt.figure().add_subplot(111)
         for i in mineral_temps.keys():
             ax.axvline(mineral_temps[i][appearance_or_disappearance], linewidth=2.0, color="black", linestyle="--")

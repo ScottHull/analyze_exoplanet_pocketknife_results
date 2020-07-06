@@ -5,10 +5,9 @@ from src.composition import Inspect as InspectComposition
 import matplotlib.pyplot as plt
 
 
-compositions = InspectComposition(path="exoplanets/Depleted_Lithosphere_Compositions")
+compositions = InspectComposition()
 # read in densities and compositions
-buoyancies = InspectBuoyancy(reg_path="exoplanets/Densities/BSP_MORB",
-                             depleted_path="exoplanets/Densities/Depleted_Lithosphere")
+buoyancies = InspectBuoyancy()
 
 b = Organize.get_all_buoyancy_forces(buoyancies=buoyancies)
 d = Organize.get_all_depletions(compositions=compositions)

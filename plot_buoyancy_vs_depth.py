@@ -4,8 +4,7 @@ from src.buoyancy import DEPTHS
 from src.sort import Organize
 import matplotlib.pyplot as plt
 
-buoyancies = InspectBuoyancy(reg_path="exoplanets/Densities/BSP_MORB",
-                             depleted_path="exoplanets/Densities/Depleted_Lithosphere")
+buoyancies = InspectBuoyancy()
 b = Organize.get_all_buoyancy_forces(buoyancies=buoyancies)
 
 p = Plots.plot_buoyancy_force_as_function_of_depth(depth=DEPTHS,
