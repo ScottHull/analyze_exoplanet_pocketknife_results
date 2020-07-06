@@ -1,7 +1,7 @@
-from plots import Plots
-from sort import Organize
-from buoyancy import Inspect as InspectBuoyancy
-from composition import Inspect as InspectComposition
+from src.plots import Plots
+from src.sort import Organize
+from src.buoyancy import Inspect as InspectBuoyancy
+from src.composition import Inspect as InspectComposition
 import matplotlib.pyplot as plt
 
 

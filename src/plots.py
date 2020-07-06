@@ -1,9 +1,7 @@
 import matplotlib.pyplot as plt
-from sort import Sort, Organize, Clean
+from src.sort import Sort, Organize, Clean
 import numpy as np
-from buoyancy import DEPTHS
-from matplotlib.patches import Ellipse
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+from src.buoyancy import DEPTHS
 from mpl_toolkits.mplot3d import Axes3D
 
 
@@ -216,18 +214,102 @@ class Plots:
         return ax
 
     @classmethod
-    def plot_compositional_profile_and_disappearances(cls, profile, mineral_temps, oxide, title="", appearance_or_disappearance='appearance'):
+    def plot_compositional_profile_and_disappearances(cls, profile, mineral_temps, title="", appearance_or_disappearance='appearance'):
+        oxide_map = {
+            "feo": "FeO",
+            "na2o": "Na2O",
+            "mgo": "MgO",
+            "al2o3": "Al2O3",
+            "sio2": "SiO2",
+            "cao": "CaO",
+            "tio2": "TiO2"
+        }
+        max_y_for_text = []
+        for i in profile.keys():
+            if i != "temperature":
+                max_y_for_text += profile[i]
+        max_y_for_text = max(max_y_for_text)
         ax = plt.figure().add_subplot(111)
-        ax.plot(profile['temperature'], profile[oxide.lower()], color='red', linewidth=2.0)
         for i in mineral_temps.keys():
             ax.axvline(mineral_temps[i][appearance_or_disappearance], linewidth=2.0, color="black", linestyle="--")
-            ax.text(mineral_temps[i][appearance_or_disappearance] + 2, (max(profile[oxide.lower()])) - 5, i, rotation=180+90)
+            ax.text(mineral_temps[i][appearance_or_disappearance] + 2, max_y_for_text - 18, i,
+                    rotation=270, fontsize=10)
+        for i in profile.keys():
+            if i != "temperature":
+                ax.plot(profile['temperature'], profile[i], linewidth=2.0, label=oxide_map[i])
         ax.set_xlabel("Temperature (C)")
-        ax.set_ylabel("{} wt%".format(oxide))
+        ax.set_ylabel("Oxide wt%")
         ax.set_title(title)
+        ax.legend()
         ax.grid()
 
         return ax
+
+    @classmethod
+    def plot_compositional_mass_fraction_profile_and_disappearances(cls, profile, mineral_temps, title="",
+                                                      appearance_or_disappearance='appearance'):
+        oxide_map = {
+            "feo": "FeO",
+            "na2o": "Na2O",
+            "mgo": "MgO",
+            "al2o3": "Al2O3",
+            "sio2": "SiO2",
+            "cao": "CaO",
+            "tio2": "TiO2"
+        }
+        max_y_for_text = []
+        for i in profile.keys():
+            if i != "temperature":
+                max_y_for_text += profile[i]
+        max_y_for_text = max(max_y_for_text)
+        ax = plt.figure().add_subplot(111)
+        for i in mineral_temps.keys():
+            ax.axvline(mineral_temps[i][appearance_or_disappearance], linewidth=2.0, color="black", linestyle="--")
+            ax.text(mineral_temps[i][appearance_or_disappearance] + 2, max_y_for_text - 18, i,
+                    rotation=270, fontsize=10)
+        for i in profile.keys():
+            if i != "temperature" and i != "mass":
+                ax.plot(profile['temperature'], profile[i], linewidth=2.0, label=oxide_map[i])
+        ax.set_xlabel("Temperature (C)")
+        ax.set_ylabel("Oxide Mass (g)")
+        ax.set_title(title)
+        ax.legend()
+        ax.grid()
+
+        return ax
+
+    @classmethod
+    def plot_appearance_or_disappearance_temperatures_against_composition(cls, appearance_or_disappearance_temperatures,
+                                                                          compositions_at_temperature, oxide,
+                                                                          appearance_or_disappearance='appearance',
+                                                                          fraction=False):
+
+        oxide = oxide.lower()
+        phases = {}
+        for star in appearance_or_disappearance_temperatures.keys():
+            for phase in appearance_or_disappearance_temperatures[star].keys():
+                if phase not in phases.keys():
+                    phases.update({phase: {
+                        oxide: [],
+                        "temperature": []
+                    }})
+                t = appearance_or_disappearance_temperatures[star][phase][appearance_or_disappearance]
+                c = compositions_at_temperature[star][phase][oxide]
+                phases[phase][oxide].append(c)
+                phases[phase]['temperature'].append(t)
+        ax = plt.figure().add_subplot(111)
+        for phase in phases.keys():
+            ax.scatter(phases[phase][oxide], phases[phase]['temperature'], linewidth=2.0, marker="+", label=phase)
+        if not fraction:
+            ax.set_xlabel("Oxide Mass (g)")
+        else:
+            ax.set_xlabel("Oxide Mass Fraction")
+        ax.set_ylabel("Temperature (C)")
+        ax.grid()
+        ax.legend()
+
+        return ax
+
 
 class Plots3D:
 

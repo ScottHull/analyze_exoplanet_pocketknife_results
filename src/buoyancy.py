@@ -1,8 +1,7 @@
 import os
 import csv
 from scipy import integrate
-from thickness import Thickness
-import matplotlib.pyplot as plt
+from src.thickness import Thickness
 
 DEPTHS = [-1.0 * i for i in [0, 6, 19.7, 28.9, 36.4, 43.88, 51.34, 58.81, 66.36, 73.94, 81.5, 88.97, 96.45, 103.93, 111.41,
           118.92, 126.47, 134.01, 141.55, 149.09, 156.64, 164.18, 171.72, 179.27, 186.79, 194.27, 201.75,
@@ -16,8 +15,8 @@ DEPTHS = [-1.0 * i for i in [0, 6, 19.7, 28.9, 36.4, 43.88, 51.34, 58.81, 66.36,
 class Inspect:
 
     def __init__(self, reg_path, depleted_path, get_actual_mass_fractions=True,
-                 initial_morb_mass_path="exoplanets/starting_morb_masses",
-                 final_morb_mass_path="exoplanets/final_morb_masses"):
+                 initial_morb_mass_path="src/exoplanets/starting_morb_masses",
+                 final_morb_mass_path="src/exoplanets/final_morb_masses"):
         super().__init__()
         self.reg_path = reg_path
         self.depleted_path = depleted_path

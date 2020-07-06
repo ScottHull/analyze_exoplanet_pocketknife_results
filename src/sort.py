@@ -77,6 +77,26 @@ class Sort:
                     break
         return cross_depths
 
+    @classmethod
+    def relate_appearance_temperature_to_composition(cls, star, appearance_temperatures, liquid_compositional_profile,
+                                                     appearance_or_disappearance='appearance', fraction=False):
+        d = {}
+        for phase in appearance_temperatures.keys():
+            if phase not in d.keys():
+                d.update({phase: {}})
+            t = appearance_temperatures[phase][appearance_or_disappearance]
+            c_index = liquid_compositional_profile['temperature'].index(t)
+            for oxide in liquid_compositional_profile.keys():
+                if oxide != "temperature" and oxide != "mass":
+                    if not fraction:
+                        d[phase].update({oxide: liquid_compositional_profile[oxide][c_index]})
+                    else:
+                        d[phase].update({oxide: liquid_compositional_profile[oxide][c_index] /
+                                                liquid_compositional_profile["mass"][c_index]})
+                elif oxide == "mass":
+                    d[phase].update({"mass": liquid_compositional_profile[oxide][c_index]})
+        return d
+
 
 class Organize:
 
@@ -100,19 +120,19 @@ class Organize:
 
         kepler_f1400_1200_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
                                                                morb_file=buoyancies.kepler_morb_f1400_1200,
-                                                                  morb_name="kepler_morb_f1400_1200")
+                                                               morb_name="kepler_morb_f1400_1200")
         kepler_f1400_1400_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
                                                                morb_file=buoyancies.kepler_morb_f1400_1400,
-                                                                  morb_name="kepler_morb_f1400_1400")
+                                                               morb_name="kepler_morb_f1400_1400")
         kepler_f1600_1200_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
                                                                morb_file=buoyancies.kepler_morb_f1600_1200,
-                                                                  morb_name="kepler_morb_f1600_1200")
+                                                               morb_name="kepler_morb_f1600_1200")
         kepler_f1600_1400_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
                                                                morb_file=buoyancies.kepler_morb_f1600_1400,
-                                                                  morb_name="kepler_morb_f1600_1400")
+                                                               morb_name="kepler_morb_f1600_1400")
         kepler_f1600_1600_buoyancies = buoyancies.get_buoyancy(bsp_file=buoyancies.kepler_bsp_1600,
                                                                morb_file=buoyancies.kepler_morb_f1600_1600,
-                                                                  morb_name="kepler_morb_f1600_1600")
+                                                               morb_name="kepler_morb_f1600_1600")
 
         adibekyan_depleted_f1400_1400_morb_1200_buoyancies = buoyancies.get_buoyancy(
             bsp_file=buoyancies.adibekyan_depleted_bsp_f1400_1400,
@@ -315,6 +335,7 @@ class Organize:
                 o_z = compositions[s][oxide_z]
                 pairs.update({s: [c, o_x, o_y, o_z]})
         return pairs
+
 
 class Clean:
 

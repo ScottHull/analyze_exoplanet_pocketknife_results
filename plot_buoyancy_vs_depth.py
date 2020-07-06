@@ -1,7 +1,7 @@
-from plots import Plots
-from buoyancy import Inspect as InspectBuoyancy
-from buoyancy import DEPTHS
-from sort import Sort, Organize
+from src.plots import Plots
+from src.buoyancy import Inspect as InspectBuoyancy
+from src.buoyancy import DEPTHS
+from src.sort import Organize
 import matplotlib.pyplot as plt
 
 buoyancies = InspectBuoyancy(reg_path="exoplanets/Densities/BSP_MORB",

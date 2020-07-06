@@ -1,8 +1,7 @@
-from plots import Plots3D
-from buoyancy import Inspect as InspectBuoyancy
-from composition import Inspect as InspectComposition
-from buoyancy import DEPTHS
-from sort import Sort, Organize
+from src.plots import Plots3D
+from src.buoyancy import Inspect as InspectBuoyancy
+from src.composition import Inspect as InspectComposition
+from src.sort import Organize
 import matplotlib.pyplot as plt
 
 compositions = InspectComposition(path="exoplanets/Depleted_Lithosphere_Compositions")

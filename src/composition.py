@@ -20,10 +20,10 @@ class Compositions:
 
 class Inspect(Compositions):
 
-    def __init__(self, path):
+    def __init__(self, path="src/exoplanets/Depleted_Lithosphere_Compositions"):
         super().__init__()
         self.path = path
-        self.__melts_path = "exoplanets/MELTS_Outputs"
+        self.__melts_path = "src/exoplanets/MELTS_Outputs"
 
         self.__read_files()
 
@@ -184,7 +184,8 @@ class Inspect(Compositions):
 
         files = []
         fnames = []
-        for dirname, dirnames, f in os.walk(self.__melts_path + "/{}".format(self.__get_dir_extension(keywords=name_keywords))):
+        for dirname, dirnames, f in os.walk(
+                self.__melts_path + "/{}".format(self.__get_dir_extension(keywords=name_keywords))):
             for i in f:
                 files.append(dirname + "/" + i)
                 fnames.append(i)
@@ -211,5 +212,56 @@ class Inspect(Compositions):
                                 break
         return d
 
+    def get_liquid_compositional_mass_fraction_profile_of_star(self, star, name_keywords=None):
+        if name_keywords is None:
+            name_keywords = ["Adibekyan", "BSP"]
+        name_keywords = [i.lower() for i in name_keywords]
+        d = {
+            "feo": [],
+            "na2o": [],
+            "mgo": [],
+            "al2o3": [],
+            "sio2": [],
+            "cao": [],
+            "tio2": [],
+            "temperature": [],
+            "mass": []
+        }
 
+        all_oxides = ["FeO", "Na2O", "MgO", "Al2O3", "SiO2", "CaO", "TiO2", "Temperature", "mass"]
 
+        files = []
+        fnames = []
+        for dirname, dirnames, f in os.walk(
+                self.__melts_path + "/{}".format(self.__get_dir_extension(keywords=name_keywords))):
+            for i in f:
+                files.append(dirname + "/" + i)
+                fnames.append(i)
+        for index, i in enumerate(fnames):
+            f = files[index]
+            if str(star) in str(f):
+                FOUND = False
+                with open(f, 'r') as infile:
+                    reader = csv.reader(infile, delimiter=",")
+                    mapped_indices = {}
+                    for row in reader:
+                        if len(row) > 0:
+                            if "liquid_0" in row[0]:
+                                header = list(next(reader))
+                                mapped_indices = self.__map_oxide_to_indices(header_row=header,
+                                                                             oxides=all_oxides)
+                                FOUND = True
+                            elif FOUND:
+                                for j in mapped_indices.keys():
+                                    if j != "mass" and j != "temperature":
+                                        d[j].append(((float(row[mapped_indices[j]]) / 100.0) *
+                                                     float(row[mapped_indices["mass"]])))
+                                    elif j == "temperature":
+                                        d[j].append(float(row[mapped_indices[j]]))
+                                    elif j == "mass":
+                                        d[j].append(float(row[mapped_indices[j]]))
+                        elif FOUND is True:
+                            if len(row) == 0:
+                                infile.close()
+                                break
+        return d

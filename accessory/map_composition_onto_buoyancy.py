@@ -1,10 +1,8 @@
-import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-from composition import Inspect as InspectComposition
-from buoyancy import Inspect as InspectBuoyancy
+from src.composition import Inspect as InspectComposition
+from src.buoyancy import Inspect as InspectBuoyancy
 
 
 compositions = InspectComposition(path="/Users/scotthull/Desktop/exoplanets/Depleted_Lithosphere_Compositions")

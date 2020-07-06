@@ -2,20 +2,28 @@ import os
 import csv
 import numpy as np
 import copy
+from src.sort import Sort
+from src.composition import Inspect as InspectComposition
 
 
 class Mineralogy:
 
-    def __init__(self, melts_files_path="exoplanets/MELTS_Outputs"):
+    def __init__(self, melts_files_path="src/exoplanets/MELTS_Outputs"):
         self.__melts_path = melts_files_path
         self.minerals = []
 
-        self.adibekyan_bsp = self.__get_appearance_and_disappearance_temperatures(dir_extension="Adibekyan_Star_Compositions_Completed_BSP_MELTS_Files")
-        self.adibekyan_morb_f1400 = self.__get_appearance_and_disappearance_temperatures(dir_extension="Adibekyan_Star_Compositions_F1400_Completed_MORB_MELTS_Files")
-        self.adibekyan_morb_f1600 = self.__get_appearance_and_disappearance_temperatures(dir_extension="Adibekyan_Star_Compositions_F1600_Completed_MORB_MELTS_Files")
-        self.kepler_bsp = self.__get_appearance_and_disappearance_temperatures(dir_extension="Kepler_Star_Compositions_Completed_BSP_MELTS_Files")
-        self.kepler_morb_f1400 = self.__get_appearance_and_disappearance_temperatures(dir_extension="Kepler_Star_Compositions_F1400_Completed_MORB_MELTS_Files")
-        self.kepler_morb_f1600 = self.__get_appearance_and_disappearance_temperatures(dir_extension="Kepler_Star_Compositions_F1400_Completed_MORB_MELTS_Files")
+        self.adibekyan_bsp = self.__get_appearance_and_disappearance_temperatures(
+            dir_extension="Adibekyan_Star_Compositions_Completed_BSP_MELTS_Files")
+        self.adibekyan_morb_f1400 = self.__get_appearance_and_disappearance_temperatures(
+            dir_extension="Adibekyan_Star_Compositions_F1400_Completed_MORB_MELTS_Files")
+        self.adibekyan_morb_f1600 = self.__get_appearance_and_disappearance_temperatures(
+            dir_extension="Adibekyan_Star_Compositions_F1600_Completed_MORB_MELTS_Files")
+        self.kepler_bsp = self.__get_appearance_and_disappearance_temperatures(
+            dir_extension="Kepler_Star_Compositions_Completed_BSP_MELTS_Files")
+        self.kepler_morb_f1400 = self.__get_appearance_and_disappearance_temperatures(
+            dir_extension="Kepler_Star_Compositions_F1400_Completed_MORB_MELTS_Files")
+        self.kepler_morb_f1600 = self.__get_appearance_and_disappearance_temperatures(
+            dir_extension="Kepler_Star_Compositions_F1400_Completed_MORB_MELTS_Files")
 
     def __initial_tracked_setup(self, minerals):
         tracked = {}
@@ -44,7 +52,6 @@ class Mineralogy:
                 tracked[i]['appearance'] = float(temperature)
             elif not np.isnan(appearance) and val == 0.0:
                 tracked[i]['disappearance'] = float(temperature)
-
 
     def __get_appearance_and_disappearance_temperatures(self, dir_extension):
         files = []
@@ -84,7 +91,8 @@ class Mineralogy:
                                 tracked = self.__initial_tracked_setup(minerals=minerals)
                                 mineral_indices = self.__map_mineral_to_index(minerals=minerals, headers=headers)
                             elif FOUND is True:
-                                self.__track_appearance_and_dissapearance(tracked=tracked, row=row, indices=mineral_indices)
+                                self.__track_appearance_and_dissapearance(tracked=tracked, row=row,
+                                                                          indices=mineral_indices)
                         else:
                             if FOUND:
                                 stars.update({star: tracked})
@@ -104,3 +112,27 @@ class Mineralogy:
 
     def get_all_unique_minerals_found(self):
         return self.minerals
+
+    def get_composition_at_appearance_or_disappearance(self, compositions, appearance_and_disappearance_temperatures,
+                                                       name_keywords=None,
+                                                       appearance_or_disappearance='appearance', fraction=False):
+        if name_keywords is None:
+            name_keywords = ["Kepler", "BSP"]
+        s = {}
+        for star in appearance_and_disappearance_temperatures.keys():
+            s.update({star: {}})
+            t = appearance_and_disappearance_temperatures[star]
+            if not fraction:
+                c = compositions.get_liquid_compositional_profile_of_star(star=star, name_keywords=name_keywords)
+            else:
+                c = compositions.get_liquid_compositional_mass_fraction_profile_of_star(star=star,
+                                                                                        name_keywords=name_keywords)
+            if len(c['temperature']) > 0:
+                r = Sort.relate_appearance_temperature_to_composition(star=star,
+                                                                      appearance_temperatures=
+                                                                      appearance_and_disappearance_temperatures[star],
+                                                                      liquid_compositional_profile=c,
+                                                                      appearance_or_disappearance=appearance_or_disappearance,
+                                                                      fraction=fraction)
+                s[star] = r
+        return s
