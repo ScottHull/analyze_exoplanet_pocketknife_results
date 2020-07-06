@@ -14,7 +14,8 @@ DEPTHS = [-1.0 * i for i in [0, 6, 19.7, 28.9, 36.4, 43.88, 51.34, 58.81, 66.36,
 
 class Inspect:
 
-    def __init__(self, reg_path, depleted_path, get_actual_mass_fractions=True,
+    def __init__(self, reg_path="src/exoplanets/Densities/BSP_MORB",
+                 depleted_path="src/exoplanets/Densities/Depleted_Lithosphere", get_actual_mass_fractions=True,
                  initial_morb_mass_path="src/exoplanets/starting_morb_masses",
                  final_morb_mass_path="src/exoplanets/final_morb_masses"):
         super().__init__()
