@@ -263,7 +263,6 @@ class Plots:
             if i != "temperature" and i != "mass":
                 max_y_for_text += profile[i]
         max_y_for_text = max(max_y_for_text)
-        print(max_y_for_text)
         ax = plt.figure().add_subplot(111)
         for i in mineral_temps.keys():
             ax.axvline(mineral_temps[i][appearance_or_disappearance], linewidth=2.0, color="black", linestyle="--")
@@ -286,26 +285,25 @@ class Plots:
                                                                           appearance_or_disappearance='appearance',
                                                                           fraction=False):
 
-        oxide = oxide.lower()
         phases = {}
         for star in appearance_or_disappearance_temperatures.keys():
             for phase in appearance_or_disappearance_temperatures[star].keys():
                 if phase not in phases.keys():
                     phases.update({phase: {
-                        oxide: [],
+                        oxide.lower(): [],
                         "temperature": []
                     }})
                 t = appearance_or_disappearance_temperatures[star][phase][appearance_or_disappearance]
-                c = compositions_at_temperature[star][phase][oxide]
-                phases[phase][oxide].append(c)
+                c = compositions_at_temperature[star][phase][oxide.lower()]
+                phases[phase][oxide.lower()].append(c)
                 phases[phase]['temperature'].append(t)
         ax = plt.figure().add_subplot(111)
         for phase in phases.keys():
-            ax.scatter(phases[phase][oxide], phases[phase]['temperature'], linewidth=2.0, marker="+", label=phase)
+            ax.scatter(phases[phase][oxide.lower()], phases[phase]['temperature'], linewidth=2.0, marker="+", label=phase)
         if not fraction:
             ax.set_xlabel("Oxide Mass (g)")
         else:
-            ax.set_xlabel("Oxide Mass Fraction")
+            ax.set_xlabel("{} Mass Fraction".format(oxide))
         ax.set_ylabel("Temperature (C)")
         ax.grid()
         ax.legend()
