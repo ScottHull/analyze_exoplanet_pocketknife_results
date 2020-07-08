@@ -9,8 +9,8 @@ oxide = 'SiO2'
 # compositions = InspectComposition(path="exoplanets/Depleted_Lithosphere_Compositions")
 # c = Organize.get_all_compositions(compositions=compositions)
 c_star = InspectComposition().get_liquid_compositional_profile_of_star(star=star,
-                                                                                                  name_keywords=[
-                                                                                                      "Kepler", "BSP"])
+                                                                       name_keywords=[
+                                                                           "Kepler", "BSP"])
 c_star_massfrac = InspectComposition().get_liquid_compositional_mass_fraction_profile_of_star(
     star=star,
     name_keywords=[

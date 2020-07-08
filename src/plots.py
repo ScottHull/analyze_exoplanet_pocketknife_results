@@ -2,7 +2,9 @@ import matplotlib.pyplot as plt
 from src.sort import Sort, Organize, Clean
 import numpy as np
 from src.buoyancy import DEPTHS
+from src.atomic import Convert
 from mpl_toolkits.mplot3d import Axes3D
+import matplotlib as mpl
 
 
 class Plots:
@@ -215,7 +217,8 @@ class Plots:
         return ax
 
     @classmethod
-    def plot_compositional_profile_and_disappearances(cls, profile, mineral_temps, title="", appearance_or_disappearance='appearance'):
+    def plot_compositional_profile_and_disappearances(cls, profile, mineral_temps, title="",
+                                                      appearance_or_disappearance='appearance'):
         oxide_map = {
             "feo": "FeO",
             "na2o": "Na2O",
@@ -248,7 +251,7 @@ class Plots:
 
     @classmethod
     def plot_compositional_mass_fraction_profile_and_disappearances(cls, profile, mineral_temps, title="",
-                                                      appearance_or_disappearance='appearance'):
+                                                                    appearance_or_disappearance='appearance'):
         oxide_map = {
             "feo": "FeO",
             "na2o": "Na2O",
@@ -281,7 +284,7 @@ class Plots:
 
     @classmethod
     def plot_appearance_or_disappearance_temperatures_against_composition(cls, appearance_or_disappearance_temperatures,
-                                                                          compositions_at_temperature, oxide,
+                                                                          compositions_at_temperature, oxide, title,
                                                                           appearance_or_disappearance='appearance',
                                                                           fraction=False):
 
@@ -299,15 +302,70 @@ class Plots:
                 phases[phase]['temperature'].append(t)
         ax = plt.figure().add_subplot(111)
         for phase in phases.keys():
-            ax.scatter(phases[phase][oxide.lower()], phases[phase]['temperature'], linewidth=2.0, marker="+", label=phase)
+            ax.scatter(phases[phase][oxide.lower()], phases[phase]['temperature'], linewidth=2.0, marker="+",
+                       label=phase)
         if not fraction:
             ax.set_xlabel("Oxide Mass (g)")
         else:
             ax.set_xlabel("{} Mass Fraction".format(oxide))
         ax.set_ylabel("Temperature (C)")
+        ax.set_title(title)
         ax.grid()
         ax.legend()
 
+        return ax
+
+    @classmethod
+    def plot_relative_cation_to_phase_appearance_at_map_crossover_depth(cls, appearances, composition, crossover,
+                                                                        target_cation, normalizing_cation,
+                                                                        target_phase):
+        x = []
+        y = []
+        min_t = None
+        max_t = None
+        color = []
+        for star in appearances.keys():
+            if target_phase in appearances[star].keys():
+                a = appearances[star][target_phase]
+                if not np.isnan(a['disappearance']):
+                    if min_t is None:
+                        min_t = a['disappearance']
+                    else:
+                        if a['disappearance'] < min_t:
+                            min_t = a['disappearance']
+                if not np.isnan(a['appearance']):
+                    if max_t is None:
+                        max_t = a['appearance']
+                    else:
+                        if a['appearance'] > max_t:
+                            max_t = a['appearance']
+        for star in appearances.keys():
+            if star in appearances.keys() and star in crossover.keys():
+                if target_phase in appearances[star].keys():
+                    if crossover[star] * -1.0 < 100:
+                        a = appearances[star][target_phase]
+                        c = composition[star]
+                        c_mole_cation = Convert().convert_oxide_pct_to_cation_pct(oxides=c)
+                        x.append(c_mole_cation[target_cation.lower()] / c_mole_cation[normalizing_cation.lower()])
+                        if np.isnan(a['appearance']):
+                            y.append([a['disappearance'], max_t])
+                        elif np.isnan(a['disappearance']):
+                            y.append([min_t, a['appearance']])
+                        else:
+                            y.append([a['disappearance'], a['appearance']])
+                        color.append(crossover[star] * -1.0)
+        ax = plt.figure().add_subplot(111)
+        norm =mpl.colors.Normalize(vmin=min(color), vmax=max(color))
+        cmap = mpl.cm.ScalarMappable(norm=norm, cmap=mpl.cm.jet)
+        cmap.set_array([])
+        for index, i in enumerate(x):
+            ax.plot([i, i], [y[index][0], y[index][1]], c=cmap.to_rgba(color[index]), linewidth=2.0)
+        ax.set_xlabel("{}/{}".format(target_cation, normalizing_cation))
+        ax.set_ylabel("Temperature (C)")
+        ax.set_title("Appearance + Disappearance Temperatures for Phase: {}".format(target_phase))
+        ax.grid()
+        cbar = plt.colorbar(cmap)
+        cbar.set_label('Crossover Depth (km)')
         return ax
 
 
@@ -342,10 +400,9 @@ class Plots3D:
 
         return ax
 
-
     @classmethod
     def plot_three_oxides_and_colormap_crossover_depth(cls, compositions, buoyancies, oxide_x, oxide_y, oxide_z, title,
-                                                clean=False):
+                                                       clean=False):
         ax = Axes3D(plt.figure())
         crossover_depths = Sort.get_crossover_depth(depths=DEPTHS, buoyancies=buoyancies)
         if clean:
@@ -353,12 +410,13 @@ class Plots3D:
             c2 = Clean.remove_outliers_from_composition_dict(data=c1, oxide=oxide_y.lower())
             c3 = Clean.remove_outliers_from_composition_dict(data=c2, oxide=oxide_z.lower())
             p = Organize.pair_crossover_depth_to_three_oxides(compositions=c3, crossover_depths=crossover_depths,
-                                                             oxide_x=oxide_x.lower(), oxide_y=oxide_y.lower(),
-                                                             oxide_z=oxide_z.lower())
+                                                              oxide_x=oxide_x.lower(), oxide_y=oxide_y.lower(),
+                                                              oxide_z=oxide_z.lower())
         else:
-            p = Organize.pair_crossover_depth_to_three_oxides(compositions=compositions, crossover_depths=crossover_depths,
-                                                             oxide_x=oxide_x.lower(), oxide_y=oxide_y.lower(),
-                                                             oxide_z=oxide_z.lower())
+            p = Organize.pair_crossover_depth_to_three_oxides(compositions=compositions,
+                                                              crossover_depths=crossover_depths,
+                                                              oxide_x=oxide_x.lower(), oxide_y=oxide_y.lower(),
+                                                              oxide_z=oxide_z.lower())
         o_x = [p[i][0] for i in p.keys()]
         o_y = [p[i][1] for i in p.keys()]
         o_z = [p[i][2] for i in p.keys()]

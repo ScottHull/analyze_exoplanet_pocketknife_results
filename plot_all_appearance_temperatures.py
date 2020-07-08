@@ -25,7 +25,8 @@ ax = Plots.plot_appearance_or_disappearance_temperatures_against_composition(
     appearance_or_disappearance_temperatures=all_appearance_and_disappearance_temperatures[focus],
     compositions_at_temperature=profiles, oxide=oxide,
     appearance_or_disappearance=appearance_or_disappearance,
-    fraction=fraction
+    fraction=fraction,
+    title=star
 )
 
 plt.show()

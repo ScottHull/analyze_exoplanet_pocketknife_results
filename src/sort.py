@@ -1,5 +1,7 @@
 import numpy as np
 from scipy.stats import iqr
+from src.atomic import Convert
+from src.thickness import Thickness
 
 
 class Sort:
@@ -96,6 +98,20 @@ class Sort:
                 elif oxide == "mass":
                     d[phase].update({"mass": liquid_compositional_profile[oxide][c_index]})
         return d
+
+    # @classmethod
+    # def relate_morb_melt_fraction_and_temperature_bsp_composition_and_phase_appearances(cls, melt_fractions,
+    #                                                                                     bsp_compositions, phases,
+    #                                                                                     low_t_target_phase,
+    #                                                                                     med_t_target_phase,
+    #                                                                                     high_t_target_phase,
+    #                                                                                     appearance_or_disappearance='appearance',):
+    #     for star in melt_fractions.keys():
+    #         if star in bsp_compositions.keys():
+    #             if star in phases.keys():
+    #                 f = melt_fractions[star]
+    #                 c = bsp_compositions[star]
+    #                 phases_appearances = phases[star][appearance_or_disappearance]
 
 
 class Organize:
