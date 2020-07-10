@@ -318,7 +318,7 @@ class Plots:
     @classmethod
     def plot_relative_cation_to_phase_appearance_at_map_crossover_depth(cls, appearances, composition, crossover,
                                                                         target_cation, normalizing_cation,
-                                                                        target_phase):
+                                                                        target_phase, title):
         x = []
         y = []
         min_t = None
@@ -355,14 +355,14 @@ class Plots:
                             y.append([a['disappearance'], a['appearance']])
                         color.append(crossover[star] * -1.0)
         ax = plt.figure().add_subplot(111)
-        norm =mpl.colors.Normalize(vmin=min(color), vmax=max(color))
+        norm = mpl.colors.Normalize(vmin=min(color), vmax=max(color))
         cmap = mpl.cm.ScalarMappable(norm=norm, cmap=mpl.cm.jet)
         cmap.set_array([])
         for index, i in enumerate(x):
             ax.plot([i, i], [y[index][0], y[index][1]], c=cmap.to_rgba(color[index]), linewidth=2.0)
         ax.set_xlabel("{}/{}".format(target_cation, normalizing_cation))
         ax.set_ylabel("Temperature (C)")
-        ax.set_title("Appearance + Disappearance Temperatures for Phase: {}".format(target_phase))
+        ax.set_title("Appearance + Disappearance Temperatures for {} ({})".format(target_phase, title))
         ax.grid()
         cbar = plt.colorbar(cmap)
         cbar.set_label('Crossover Depth (km)')
