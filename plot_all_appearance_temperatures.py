@@ -3,7 +3,7 @@ from src.composition import Inspect as InspectComposition
 from src.plots import Plots
 import matplotlib.pyplot as plt
 
-oxide = 'SiO2'
+oxide = 'Na2O'
 fraction = True
 appearance_or_disappearance = 'appearance'
 
