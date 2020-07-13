@@ -297,9 +297,10 @@ class Plots:
                         "temperature": []
                     }})
                 t = appearance_or_disappearance_temperatures[star][phase][appearance_or_disappearance]
-                c = compositions_at_temperature[star][phase][oxide.lower()]
-                phases[phase][oxide.lower()].append(c)
-                phases[phase]['temperature'].append(t)
+                if phase in compositions_at_temperature[star].keys():
+                    c = compositions_at_temperature[star][phase][oxide.lower()]
+                    phases[phase][oxide.lower()].append(c)
+                    phases[phase]['temperature'].append(t)
         ax = plt.figure().add_subplot(111)
         for phase in phases.keys():
             ax.scatter(phases[phase][oxide.lower()], phases[phase]['temperature'], linewidth=2.0, marker="+",
@@ -309,7 +310,7 @@ class Plots:
         else:
             ax.set_xlabel("{} Mass Fraction".format(oxide))
         ax.set_ylabel("Temperature (C)")
-        ax.set_title(title)
+        ax.set_title(title + " (Phase {})".format(appearance_or_disappearance.capitalize()))
         ax.grid()
         ax.legend()
 
@@ -318,7 +319,7 @@ class Plots:
     @classmethod
     def plot_relative_cation_to_phase_appearance_at_map_crossover_depth(cls, appearances, composition, crossover,
                                                                         target_cation, normalizing_cation,
-                                                                        target_phase, title):
+                                                                        target_phase, title, absolute_min_t):
         x = []
         y = []
         min_t = None
@@ -339,6 +340,8 @@ class Plots:
                     else:
                         if a['appearance'] > max_t:
                             max_t = a['appearance']
+        if min_t is None:
+            min_t = absolute_min_t
         for star in appearances.keys():
             if star in appearances.keys() and star in crossover.keys():
                 if target_phase in appearances[star].keys():

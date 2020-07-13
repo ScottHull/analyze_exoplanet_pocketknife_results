@@ -3,30 +3,41 @@ from src.composition import Inspect as InspectComposition
 from src.plots import Plots
 import matplotlib.pyplot as plt
 
-star = '2M18495813+4358487'
-oxide = 'SiO2'
+oxide = 'MgO'
 fraction = True
-focus = "kepler_bsp"
-keywords = ["Kepler", "BSP"]
 appearance_or_disappearance = 'appearance'
+
+focus_keywords = ["MORB", "f1400"]
+focus = "{}_{}".format(focus_keywords[0].lower(), focus_keywords[1].lower())
+kepler_focus = "kepler_{}".format(focus)
+kepler_keywords = ["Kepler"] + focus_keywords
+adibekyan_focus = "adibekyan_{}".format(focus)
+adibekyan_keywords = ["Adibekyan"] + focus_keywords
 
 c = InspectComposition()
 m = Mineralogy()
 all_appearance_and_disappearance_temperatures = m.get_appearance_and_disappearance_temperatures()
 
-profiles = m.get_composition_at_appearance_or_disappearance(compositions=c,
+adibekyan_profiles = m.get_composition_at_appearance_or_disappearance(compositions=c,
                                                             appearance_and_disappearance_temperatures=
-                                                            all_appearance_and_disappearance_temperatures[focus],
-                                                            name_keywords=keywords,
+                                                            all_appearance_and_disappearance_temperatures[adibekyan_focus],
+                                                            name_keywords=adibekyan_keywords,
+                                                            appearance_or_disappearance=appearance_or_disappearance,
+                                                            fraction=fraction)
+kepler_profiles = m.get_composition_at_appearance_or_disappearance(compositions=c,
+                                                            appearance_and_disappearance_temperatures=
+                                                            all_appearance_and_disappearance_temperatures[kepler_focus],
+                                                            name_keywords=kepler_keywords,
                                                             appearance_or_disappearance=appearance_or_disappearance,
                                                             fraction=fraction)
 
 ax = Plots.plot_appearance_or_disappearance_temperatures_against_composition(
-    appearance_or_disappearance_temperatures=all_appearance_and_disappearance_temperatures[focus],
-    compositions_at_temperature=profiles, oxide=oxide,
+    appearance_or_disappearance_temperatures={**all_appearance_and_disappearance_temperatures[adibekyan_focus],
+                                              **all_appearance_and_disappearance_temperatures[kepler_focus]},
+    compositions_at_temperature={**adibekyan_profiles, **kepler_profiles}, oxide=oxide,
     appearance_or_disappearance=appearance_or_disappearance,
     fraction=fraction,
-    title=star
+    title="Adibekyan + Kepler MORB {}".format(focus_keywords[1].upper())
 )
 
 plt.show()

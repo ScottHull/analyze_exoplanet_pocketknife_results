@@ -23,7 +23,7 @@ class Mineralogy:
         self.kepler_morb_f1400 = self.__get_appearance_and_disappearance_temperatures(
             dir_extension="Kepler_Star_Compositions_F1400_Completed_MORB_MELTS_Files")
         self.kepler_morb_f1600 = self.__get_appearance_and_disappearance_temperatures(
-            dir_extension="Kepler_Star_Compositions_F1400_Completed_MORB_MELTS_Files")
+            dir_extension="Kepler_Star_Compositions_F1600_Completed_MORB_MELTS_Files")
 
     def __initial_tracked_setup(self, minerals):
         tracked = {}
