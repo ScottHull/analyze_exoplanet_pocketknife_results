@@ -3,12 +3,12 @@ from src.composition import Inspect as InspectComposition
 from src.plots import Plots
 import matplotlib.pyplot as plt
 
-oxide = 'MgO'
+oxide = 'SiO2'
 fraction = True
 appearance_or_disappearance = 'appearance'
 
-focus_keywords = ["MORB", "f1400"]
-focus = "{}_{}".format(focus_keywords[0].lower(), focus_keywords[1].lower())
+focus_keywords = ["BSP", ""]
+focus = "{}{}".format(focus_keywords[0].lower(), focus_keywords[1].lower())
 kepler_focus = "kepler_{}".format(focus)
 kepler_keywords = ["Kepler"] + focus_keywords
 adibekyan_focus = "adibekyan_{}".format(focus)
@@ -37,7 +37,7 @@ ax = Plots.plot_appearance_or_disappearance_temperatures_against_composition(
     compositions_at_temperature={**adibekyan_profiles, **kepler_profiles}, oxide=oxide,
     appearance_or_disappearance=appearance_or_disappearance,
     fraction=fraction,
-    title="Adibekyan + Kepler MORB {}".format(focus_keywords[1].upper())
+    title="Adibekyan + Kepler {} {}".format(focus_keywords[0].upper(), focus_keywords[1].upper())
 )
 
 plt.show()
