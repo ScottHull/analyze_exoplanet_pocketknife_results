@@ -32,7 +32,7 @@ buoyancies = InspectBuoyancy()
 test = [
     ("kepler_f1400_1200_buoyancies", "kepler_morb_f1400", compositions.kepler_morb_f1400, 1400 - 273.15),
     ("kepler_f1400_1400_buoyancies", "kepler_morb_f1400", compositions.kepler_morb_f1400, 1400 - 273.15),
-    ("kepler_f1600_1200_buoyancies", "kepler_morb_f1600", compositions.kepler_morb_f1600, 1400 - 273.15),
+    ("kepler_f1600_1200_buoyancies", "kepler_morb_f1600", compositions.kepler_morb_f1600, 1600 - 273.15),
     ("kepler_f1600_1400_buoyancies", "kepler_morb_f1600", compositions.kepler_morb_f1600, 1600 - 273.15),
     ("kepler_f1600_1600_buoyancies", "kepler_morb_f1600", compositions.kepler_morb_f1600, 1600 - 273.15),
 ]
@@ -40,6 +40,7 @@ test = [
 axs = []
 
 for i in test:
+    print(i[0], i[1])
     c = compositions.get_composition(df=i[2])
 
     b = Organize.get_all_buoyancy_forces(buoyancies=buoyancies)
@@ -55,7 +56,7 @@ for i in test:
         appearances=all_appearance_and_disappearance_temperatures[i[1]],
         composition=c, crossover=crossovers,
         target_cation="Si", normalizing_cation="Fe",
-        target_phase="feldspar_0",
+        target_phase="clinopyroxene_0",
         title=i[0],
         absolute_min_t=i[3]
     )
