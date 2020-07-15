@@ -57,7 +57,8 @@ class Inspect:
         self.__getfiles()
 
         if self.__get_actual_mass_fractions:
-            self.thicknesses = Thickness(initial_mass_path=initial_morb_mass_path, final_mass_path=final_morb_mass_path)
+            self.thicknesses = Thickness(initial_mass_path=initial_morb_mass_path,
+                                         final_mass_path=final_morb_mass_path)
 
     def __return_df(self, f):
         return list(csv.reader(open(f, 'r'), delimiter=","))
