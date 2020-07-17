@@ -9,6 +9,7 @@ compositions = InspectComposition()
 buoyancies = InspectBuoyancy()
 m = Mineralogy()
 
+
 oxide = 'SiO2'
 fraction = True
 appearance_or_disappearance = 'appearance'
