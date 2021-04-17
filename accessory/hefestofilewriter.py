@@ -139,14 +139,14 @@ class HeFESTpFileWriter:
 
 
 df_paths = [
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adibekyan_bsp_compositions.csv",
+    "/Users/scotthull/Downloads/adibekyan/bsp/adibekyan_BSP_Composition.csv",
     "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adibekyan_morb_compositions_f1200.csv",
     "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adibekyan_morb_compositions_f1400.csv",
     "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adibekyan_morb_compositions_f1600.csv",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_bsp_compositions.csv",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_morb_compositions_f1200.csv",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_morb_compositions_f1400.csv",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_morb_compositions_f1600.csv"
+    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_bsp_compositions.csv",
+    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_morb_compositions_f1200.csv",
+    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_morb_compositions_f1400.csv",
+    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_morb_compositions_f1600.csv"
 ]
 
 temperatures = [
@@ -165,10 +165,10 @@ to_paths = [
     "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adi_morb_f1200",
     "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adi_morb_f1400",
     "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adi_morb_f1600",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_bsp",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_morb_f1200",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_morb_f1400",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_morb_f1600",
+    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_bsp",
+    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_morb_f1200",
+    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_morb_f1400",
+    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_morb_f1600",
 ]
 
 for index, path in enumerate(df_paths):
