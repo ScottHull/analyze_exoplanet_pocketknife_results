@@ -32,14 +32,17 @@ class HeFESToReformat:
                     file_path = fort_path + "/" + file
                     star = file.split("_")[0]
                     print(star)
-                    df = pd.read_fwf(file_path, header=None)
-                    df.to_csv(to_fort_path + "/" + star + ".csv", index=None, header=None)
+                    try:
+                        df = pd.read_fwf(file_path, header=None)
+                        df.to_csv(to_fort_path + "/" + star + ".csv", index=None, header=None)
+                    except:
+                        pass
 
     def reformat(self):
         self.__walk()
 
 
 HeFESToReformat(
-    from_path="/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/hefesto_output_files/kepler_morb_f1200_HeFESTo_Output_Files",
-    to_path="/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/hefesto_output_files/reformatted_morb"
+    from_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/raw/morb/adibekyan_morb_f1600_HeFESTo_Output_Files",
+    to_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/csv/morb/f1600"
 ).reformat()
