@@ -21,7 +21,7 @@ class BuoyantForces:
         self.output_file = open(self.output_file_name, 'w')
 
     def specific_buoyancy(self, bsp_density, morb_density, gravity=9.8):
-        density_differentials = [x - y for x, y in zip(morb_density, bsp_density)]
+        density_differentials = [x - y for x, y in zip(bsp_density, morb_density)]
         buoyancies = []
         for index, i in enumerate(density_differentials):
             # must convert g/m3 to kg/m3 and km to m
@@ -84,8 +84,8 @@ for r in runs:
     bsp_temp, morb_f_temp, morb_temp = r
 
     BuoyantForces(
-        name="Adibekyan_BSP_{}_MORB_F{}_{}".format(bsp_temp, morb_f_temp, morb_temp),
-        bsp_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/csv/bsp/{}".format(bsp_temp),
-        morb_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/csv/morb/f{}/{}".format(morb_f_temp,
+        name="Kepler_BSP_{}_MORB_F{}_{}".format(bsp_temp, morb_f_temp, morb_temp),
+        bsp_path="C:/Users/Scott/Desktop/3_26_2021/kepler/hefesto_output_files/csv/bsp/{}".format(bsp_temp),
+        morb_path="C:/Users/Scott/Desktop/3_26_2021/kepler/hefesto_output_files/csv/morb/f{}/{}".format(morb_f_temp,
                                                                                                         morb_temp)
     ).calculate(gravity=9.8)

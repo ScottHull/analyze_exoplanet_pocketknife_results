@@ -3,77 +3,14 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\accessory\MORB_Recalc_Bulkfile.csv">
+        <entry key="\accessory\hefesto_analysis\Adibekyan_BSP_1600_MORB_F1600_1600.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\accessory\logfile.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\accessory\morb_debug.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\hefesto_analysis\Adibekyan_BSP_1400_MORB_F1400_1400.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\hefesto_analysis\Adibekyan_BSP_1600_MORB_F1400_1400.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\hefesto_analysis\Adibekyan_BSP_1600_MORB_F1600_1400.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\hefesto_analysis\Adibekyan_BSP_1600_MORB_F1600_1600.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\hefesto_analysis\Kepler_BSP_1400_MORB_F1400_1400.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\hefesto_analysis\Kepler_BSP_1600_MORB_F1400_1400.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\hefesto_analysis\Kepler_BSP_1600_MORB_F1600_1400.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\hefesto_analysis\Kepler_BSP_1600_MORB_F1600_1600.csv">
+        <entry key="\accessory\hefesto_analysis\Kepler_BSP_1600_MORB_F1400_1400.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
