@@ -3,8 +3,9 @@ import csv
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 class Compositions:
-    
+
     def __init__(self):
         self.adibekyan_bsp = None
         self.adibekyan_morb_f1400 = None
@@ -16,6 +17,7 @@ class Compositions:
         self.kepler_morb_f1600 = None
         self.kepler_depleted_bsp_f1400 = None
         self.kepler_depleted_bsp_f1600 = None
+
 
 class Inspect(Compositions):
 
@@ -90,13 +92,20 @@ class Inspect(Compositions):
                 depleted_bsp_cao = depleted_bsp_df['CaO'][row]
                 depleted_bsp_tio2 = depleted_bsp_df['TiO2'][row]
 
-                depletion_feo = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_feo, depleted_bsp_oxide=depleted_bsp_feo)
-                depletion_na2o = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_na2o, depleted_bsp_oxide=depleted_bsp_na2o)
-                depletion_mgo = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_mgo, depleted_bsp_oxide=depleted_bsp_mgo)
-                depletion_al2o3 = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_al2o3, depleted_bsp_oxide=depleted_bsp_al2o3)
-                depletion_sio2 = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_sio2, depleted_bsp_oxide=depleted_bsp_sio2)
-                depletion_cao = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_cao, depleted_bsp_oxide=depleted_bsp_cao)
-                depletion_tio2 = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_tio2, depleted_bsp_oxide=depleted_bsp_tio2)
+                depletion_feo = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_feo,
+                                                       depleted_bsp_oxide=depleted_bsp_feo)
+                depletion_na2o = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_na2o,
+                                                        depleted_bsp_oxide=depleted_bsp_na2o)
+                depletion_mgo = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_mgo,
+                                                       depleted_bsp_oxide=depleted_bsp_mgo)
+                depletion_al2o3 = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_al2o3,
+                                                         depleted_bsp_oxide=depleted_bsp_al2o3)
+                depletion_sio2 = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_sio2,
+                                                        depleted_bsp_oxide=depleted_bsp_sio2)
+                depletion_cao = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_cao,
+                                                       depleted_bsp_oxide=depleted_bsp_cao)
+                depletion_tio2 = self.__quant_depletion(undepleted_bsp_oxide=undepleted_bsp_tio2,
+                                                        depleted_bsp_oxide=depleted_bsp_tio2)
 
                 depletion_pct = {
                     'feo': depletion_feo,
@@ -112,7 +121,6 @@ class Inspect(Compositions):
 
         return depletion_percentages
 
-
     def plot_depletion(self):
         ax_sio2 = plt.figure().add_subplot(111)
         ax_feo = plt.figure().add_subplot(111)
@@ -124,22 +132,22 @@ class Inspect(Compositions):
         adibekyan_depletion_f1600 = self.__calc_depletion(undepleted_bsp_df=self.adibekyan_bsp,
                                                           depleted_bsp_df=self.adibekyan_depleted_bsp_f1600)
         kepler_depletion_f1400 = self.__calc_depletion(undepleted_bsp_df=self.kepler_bsp,
-                                                          depleted_bsp_df=self.kepler_depleted_bsp_f1400)
+                                                       depleted_bsp_df=self.kepler_depleted_bsp_f1400)
         kepler_depletion_f1600 = self.__calc_depletion(undepleted_bsp_df=self.kepler_bsp,
-                                                          depleted_bsp_df=self.kepler_depleted_bsp_f1600)
-        
+                                                       depleted_bsp_df=self.kepler_depleted_bsp_f1600)
+
         sio2_depletion_f1400 = [i['sio2'] for i in adibekyan_depletion_f1400] + [i['sio2'] for i in
                                                                                  kepler_depletion_f1400]
         mgo_depletion_f1400 = [i['mgo'] for i in adibekyan_depletion_f1400] + [i['mgo'] for i in
-                                                                                 kepler_depletion_f1400]
+                                                                               kepler_depletion_f1400]
         feo_depletion_f1400 = [i['feo'] for i in adibekyan_depletion_f1400] + [i['feo'] for i in
-                                                                                 kepler_depletion_f1400]
+                                                                               kepler_depletion_f1400]
         na2o_depletion_f1400 = [i['na2o'] for i in adibekyan_depletion_f1400] + [i['na2o'] for i in
                                                                                  kepler_depletion_f1400]
         sio2_depletion_f1400 = [i['sio2'] for i in adibekyan_depletion_f1400] + [i['sio2'] for i in
                                                                                  kepler_depletion_f1400]
         al2o3_depletion_f1400 = [i['al2o3'] for i in adibekyan_depletion_f1400] + [i['al2o3'] for i in
-                                                                                 kepler_depletion_f1400]
+                                                                                   kepler_depletion_f1400]
 
         sio2_depletion_f1600 = [i['sio2'] for i in adibekyan_depletion_f1600] + [i['sio2'] for i in
                                                                                  kepler_depletion_f1600]
@@ -153,9 +161,9 @@ class Inspect(Compositions):
                                                                                  kepler_depletion_f1600]
         al2o3_depletion_f1600 = [i['al2o3'] for i in adibekyan_depletion_f1600] + [i['al2o3'] for i in
                                                                                    kepler_depletion_f1600]
-        
+
         ax_sio2.hist([sio2_depletion_f1400, sio2_depletion_f1600], bins=30, density=False, histtype='bar', rwidth=60,
-                align='mid', label=['F1400', 'F1600'])
+                     align='mid', label=['F1400', 'F1600'])
         ax_sio2.set_xlabel("Depletion % [((depleted_bsp_oxide - undepleted_bsp_oxide) / undepleted_bsp_oxide) * 100.0]")
         ax_sio2.set_ylabel("Number")
         ax_sio2.set_title("SiO2 Depletion")
@@ -163,7 +171,7 @@ class Inspect(Compositions):
         ax_sio2.legend()
 
         ax_feo.hist([feo_depletion_f1400, feo_depletion_f1600], bins=30, density=False, histtype='bar', rwidth=60,
-                     align='mid', label=['F1400', 'F1600'])
+                    align='mid', label=['F1400', 'F1600'])
         ax_feo.set_xlabel("Depletion % [((depleted_bsp_oxide - undepleted_bsp_oxide) / undepleted_bsp_oxide) * 100.0]")
         ax_feo.set_ylabel("Number")
         ax_feo.set_title("FeO Depletion")
@@ -171,7 +179,7 @@ class Inspect(Compositions):
         ax_feo.legend()
 
         ax_mgo.hist([mgo_depletion_f1400, mgo_depletion_f1600], bins=30, density=False, histtype='bar', rwidth=60,
-                     align='mid', label=['F1400', 'F1600'])
+                    align='mid', label=['F1400', 'F1600'])
         ax_mgo.set_xlabel("Depletion % [((depleted_bsp_oxide - undepleted_bsp_oxide) / undepleted_bsp_oxide) * 100.0]")
         ax_mgo.set_ylabel("Number")
         ax_mgo.set_title("MgO Depletion")
@@ -179,8 +187,9 @@ class Inspect(Compositions):
         ax_mgo.legend()
 
         ax_al2o3.hist([al2o3_depletion_f1400, al2o3_depletion_f1600], bins=30, density=False, histtype='bar', rwidth=60,
-                     align='mid', label=['F1400', 'F1600'])
-        ax_al2o3.set_xlabel("Depletion % [((depleted_bsp_oxide - undepleted_bsp_oxide) / undepleted_bsp_oxide) * 100.0]")
+                      align='mid', label=['F1400', 'F1600'])
+        ax_al2o3.set_xlabel(
+            "Depletion % [((depleted_bsp_oxide - undepleted_bsp_oxide) / undepleted_bsp_oxide) * 100.0]")
         ax_al2o3.set_ylabel("Number")
         ax_al2o3.set_title("Al2O3 Depletion")
         ax_al2o3.grid()
@@ -195,7 +204,6 @@ class Inspect(Compositions):
         ax_na2o.legend()
 
         plt.show()
-
 
 # i = Inspect(path="/Users/scotthull/Desktop/exoplanets/Depleted_Lithosphere_Compositions")
 # i.plot_depletion()

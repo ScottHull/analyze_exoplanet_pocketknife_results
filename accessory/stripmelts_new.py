@@ -264,7 +264,6 @@ class StripMELTS:
             morb_recalc_outfile.write(chem_to_outfile)
 
 
-
 s = StripMELTS(
     path_to_files="C:/Users/Scott/Desktop/3_26_2021/adibekyan/morb/f1600/adibekyan_Completed_MORB_MELTS_Files")
 s.log_MELTS_outputs()

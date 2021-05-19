@@ -1,7 +1,10 @@
 import pandas as pd
 import numpy as np
+from math import isnan
 import matplotlib.pyplot as plt
 from src.atomic import Convert
+from sklearn import linear_model
+import statsmodels.api as sm
 
 # BSP temperature, MORB F temperature, MORB temperature
 runs = [
@@ -77,19 +80,7 @@ def get_density_file(path_to_folder, bsp_temperature, morb_F_temperature, morb_t
     return df
 
 
-def get_crossover_depth(star, density):
-    depths = density.keys()
-    d = [float(i) for i in density.loc[star].values.flatten().tolist()]
-    for index, i in enumerate(d):
-        if index < len(d) - 2:
-            if i > 0 and d[index + 1] < 0:
-                if star == "Sun":
-                    print(depths[index + 1])
-                return float(depths[index + 1])
-    return None
-
-
-def get_data(element_1, element_2, composition, density):
+def get_data(element_1, element_2, composition, density, bsp_temp, morb_f_temp, morb_temp):
     data = []
     for star in composition.index:
         if star in density.index.values.tolist():
@@ -100,50 +91,67 @@ def get_data(element_1, element_2, composition, density):
             element_1_val = cation_pct[element_1]
             element_2_val = cation_pct[element_2]
             s = sum(list(cation_pct.values()))
-            cd = get_crossover_depth(star=star, density=density)
-            if cd is not None:
-                data.append((star, run, element_1_val, element_2_val, cd))
+            try:
+                final_density = density["573.68"][star].values[0]
+            except:
+                final_density = density["573.68"][star]
+            if not isnan(float(final_density)):
+                data.append((star, run, bsp_temp, morb_f_temp, morb_temp, element_1_val, element_2_val, final_density))
     return data
 
 
-def plot(fig, ax, index, data, bsp_temp, morb_f_temp, morb_temp, element_1, element_2, compostion_relative_to):
-    fname = "bsp_{}_morb_f{}_{}_{}_relative.png".format(bsp_temp, morb_f_temp, morb_temp, compostion_relative_to)
-    ax = ax.ravel()
-    ax[index].scatter(
-        [i[2] / i[3] for i in data if i[1] == "adibekyan"],
-        [i[4] for i in data if i[1] == "adibekyan"],
-        marker="+",
-        color='red',
-        label='adibekyan'
-    )
-    ax[index].scatter(
-        [i[2] / i[3] for i in data if i[1] == "kepler"],
-        [i[4] for i in data if i[1] == "kepler"],
-        marker="+",
-        color='blue',
-        label='kepler'
-    )
-    ax[index].axvline([i[2] / i[3] for i in data if i[0] == "Sun"], linestyle="--", color='black')
-    ax[index].axhline([i[4] for i in data if i[0] == "Sun"], linestyle="--", color='black', label="Sun")
-    element_1 = element_1[0:2].capitalize()
-    element_2 = element_2[0:2].capitalize()
-    # ax[index].set_xlabel("{}/{} ({})".format(element_1, element_2, compostion_relative_to))
-    # ax[index].set_ylabel("Specific Buoyancy @ 573.68 km")
-    ax[index].set_title("BSP {} K, MORB F{} K @ {} K".format(bsp_temp, morb_f_temp, morb_temp))
-    ax[index].grid()
-    fig.supxlabel("{}/{} ({})".format(element_1, element_2, compostion_relative_to))
-    fig.supylabel("Specific Buoyancy Crossover Depth (km)")
-    if index == len(ax) - 1:
-        ax[index].legend()
+def reformat_data(data, element_1, element_2):
+    element_1 = element_1[0:2].lower()
+    element_2 = element_2[0:2].lower()
+    d = {
+        'bsp_temp': [i[2] for i in data],
+        'morb_f_temp': [i[3] for i in data],
+        'morb_temp': [i[4] for i in data],
+        '{}/{}'.format(element_1, element_2): [i[5] / i[6] for i in data],
+        'final_density': [i[7] for i in data]
+    }
+    df = pd.DataFrame(d)
+    print(df)
+    return df
+
+
+def regression(df, element_1, element_2):
+    element_1 = element_1[0:2].lower()
+    element_2 = element_2[0:2].lower()
+    regression_headers_x = ['bsp_temp', 'morb_f_temp', 'morb_temp', '{}/{}'.format(element_1, element_2)]
+    print("X: ", regression_headers_x)
+    X = df[regression_headers_x]
+    Y = df['final_density']
+    # with sklearn
+    regr = linear_model.LinearRegression()
+    regr.fit(X, Y)
+    print('Intercept: \n', regr.intercept_)
+    print('Coefficients: \n', regr.coef_)
+    X = sm.add_constant(X)  # adding a constant
+    model = sm.OLS(Y, X).fit()
+    predictions = model.predict(X)
+    print_model = model.summary()
+    print(print_model)
+    return regr.coef_
+
+
+def predict(variables, coefficients):
+    y = [x * y for x, y in zip(coefficients, variables)]
+    return y
 
 
 composition_path = "C:/Users/Scott/Desktop/3_26_2021/summary"
 density_path = composition_path + "/specific_buoyancy"
-element_1 = "MgO"
+element_1 = "SiO2"
 element_2 = "FeO"
 
-fig_bsp, axs_bsp = plt.subplots(2, 2, figsize=(16, 9), facecolor='w', edgecolor='k')
-fig_morb, axs_morb = plt.subplots(2, 2, figsize=(16, 9), facecolor='w', edgecolor='k')
+element_1_cation = element_1[0:2].lower()
+element_2_cation = element_2[0:2].lower()
+regression_dependent_variables = ['bsp_temp', 'morb_f_temp', 'morb_temp',
+                                  '{}/{}'.format(element_1_cation, element_2_cation)]
+
+all_bsp_data = []
+all_morb_data = []
 
 c_bsp = get_composition_file(path_to_folder=composition_path, material="bsp", F_temperature="")
 for index, r in enumerate(runs):
@@ -151,12 +159,17 @@ for index, r in enumerate(runs):
     c_morb = get_composition_file(path_to_folder=composition_path, material="morb", F_temperature=morb_f_temp)
     d = get_density_file(path_to_folder=density_path, bsp_temperature=bsp_temp,
                          morb_F_temperature=morb_f_temp, morb_temperature=morb_temp)
-    data_bsp = get_data(element_1=element_1, element_2=element_2, composition=c_bsp, density=d)
-    data_morb = get_data(element_1=element_1, element_2=element_2, composition=c_morb, density=d)
-    plot(data=data_bsp, bsp_temp=bsp_temp, morb_f_temp=morb_f_temp, morb_temp=morb_temp,
-         element_1=element_1, element_2=element_2, compostion_relative_to="BSP", fig=fig_bsp, ax=axs_bsp, index=index)
-    plot(data=data_morb, bsp_temp=bsp_temp, morb_f_temp=morb_f_temp, morb_temp=morb_temp,
-         element_1=element_1, element_2=element_2, compostion_relative_to="MORB", fig=fig_morb, ax=axs_morb,
-         index=index)
+    data_bsp = get_data(element_1=element_1, element_2=element_2, composition=c_bsp, density=d, bsp_temp=bsp_temp,
+                        morb_f_temp=morb_f_temp, morb_temp=morb_temp)
+    data_morb = get_data(element_1=element_1, element_2=element_2, composition=c_morb, density=d, bsp_temp=bsp_temp,
+                         morb_f_temp=morb_f_temp, morb_temp=morb_temp)
+    all_bsp_data.append(data_bsp)
+    all_morb_data.append(data_morb)
 
-plt.show()
+all_bsp_data = [item for sublist in all_bsp_data for item in sublist]
+all_morb_data = [item for sublist in all_morb_data for item in sublist]
+
+reform_df_bsp = reformat_data(data=all_bsp_data, element_1=element_1, element_2=element_2)
+reform_df_morb = reformat_data(data=all_morb_data, element_1=element_1, element_2=element_2)
+bsp_coeffs = regression(df=reform_df_bsp, element_1=element_1, element_2=element_2)
+morb_coeffs = regression(df=reform_df_morb, element_1=element_1, element_2=element_2)

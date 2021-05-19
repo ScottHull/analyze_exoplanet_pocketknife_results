@@ -391,7 +391,6 @@ class Inspect:
         # plt.tight_layout()
         plt.show()
 
-
 # i = Inspect(reg_path="/Users/scotthull/Desktop/exoplanets/Densities/BSP_MORB",
 #             depleted_path="/Users/scotthull/Desktop/exoplanets/Densities/Depleted_Lithosphere")
 # i.build_histogram()

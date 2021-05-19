@@ -9,7 +9,6 @@ compositions = InspectComposition()
 buoyancies = InspectBuoyancy()
 m = Mineralogy()
 
-
 oxide = 'SiO2'
 fraction = True
 appearance_or_disappearance = 'appearance'
@@ -55,5 +54,3 @@ kepler_profiles = m.get_composition_at_appearance_or_disappearance(compositions=
                                                                    name_keywords=kepler_keywords,
                                                                    appearance_or_disappearance=appearance_or_disappearance,
                                                                    fraction=fraction)
-
-

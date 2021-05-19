@@ -4,21 +4,22 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 bsp_chem_file = pd.read_csv("/Users/scotthull/Desktop/exoplanets/BSP_MORB_Compositions/adibekyan_bsp_compositions.csv")
-morb_chem_file_1200 = pd.read_csv("/Users/scotthull/Desktop/exoplanets/BSP_MORB_Compositions/adibekyan_morb_compositions_f1200.csv")
-morb_chem_file_1400 = pd.read_csv("/Users/scotthull/Desktop/exoplanets/BSP_MORB_Compositions/adibekyan_morb_compositions_f1400.csv")
-morb_chem_file_1600 = pd.read_csv("/Users/scotthull/Desktop/exoplanets/BSP_MORB_Compositions/adibekyan_morb_compositions_f1600.csv")
-
+morb_chem_file_1200 = pd.read_csv(
+    "/Users/scotthull/Desktop/exoplanets/BSP_MORB_Compositions/adibekyan_morb_compositions_f1200.csv")
+morb_chem_file_1400 = pd.read_csv(
+    "/Users/scotthull/Desktop/exoplanets/BSP_MORB_Compositions/adibekyan_morb_compositions_f1400.csv")
+morb_chem_file_1600 = pd.read_csv(
+    "/Users/scotthull/Desktop/exoplanets/BSP_MORB_Compositions/adibekyan_morb_compositions_f1600.csv")
 
 sun_bsp = {}
 sun_morb_1200 = {}
 sun_morb_1400 = {}
 sun_morb_1600 = {}
 
-
 for row in bsp_chem_file.index:
     if bsp_chem_file['Star'][row] == "Sun":
         print(row)
-        sun_bsp= {
+        sun_bsp = {
             "FeO": bsp_chem_file["FeO"][row],
             "Na2O": bsp_chem_file["Na2O"][row],
             "MgO": bsp_chem_file["MgO"][row],
@@ -42,7 +43,7 @@ for row in morb_chem_file_1200.index:
             "TiO2": morb_chem_file_1200["TiO2"][row],
             "Cr2O3": morb_chem_file_1200["Cr2O3"][row]
         }
-        
+
 for row in morb_chem_file_1400.index:
     if morb_chem_file_1400['Star'][row] == "Sun":
         print(row)
@@ -56,7 +57,7 @@ for row in morb_chem_file_1400.index:
             "TiO2": morb_chem_file_1400["TiO2"][row],
             "Cr2O3": morb_chem_file_1400["Cr2O3"][row]
         }
-        
+
 for row in morb_chem_file_1600.index:
     if morb_chem_file_1600['Star'][row] == "Sun":
         print(row)

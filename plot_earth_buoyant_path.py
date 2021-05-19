@@ -40,4 +40,3 @@ ax.set_title("Sun")
 ax.grid()
 ax.legend()
 plt.show()
-

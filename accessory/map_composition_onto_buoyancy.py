@@ -4,7 +4,6 @@ from matplotlib.patches import Ellipse
 from src.composition import Inspect as InspectComposition
 from src.buoyancy import Inspect as InspectBuoyancy
 
-
 compositions = InspectComposition(path="/Users/scotthull/Desktop/exoplanets/Depleted_Lithosphere_Compositions")
 buoyancies = InspectBuoyancy(reg_path="/Users/scotthull/Desktop/exoplanets/Densities/BSP_MORB",
                              depleted_path="/Users/scotthull/Desktop/exoplanets/Densities/Depleted_Lithosphere")
@@ -63,24 +62,25 @@ kepler_depleted_f1600_1600_morb_1600_buoyancies = buoyancies.get_buoyancy(
     bsp_file=buoyancies.kepler_depleted_bsp_f1600_1600,
     morb_file=buoyancies.kepler_morb_f1600_1600)
 
-
 adibekyan_f1400_depletion = compositions.get_depletion(parent_reservoir=compositions.adibekyan_bsp,
-                                                          daughter_reservoir=compositions.adibekyan_morb_f1400)
+                                                       daughter_reservoir=compositions.adibekyan_morb_f1400)
 adibekyan_f1600_depletion = compositions.get_depletion(parent_reservoir=compositions.adibekyan_bsp,
-                                                          daughter_reservoir=compositions.adibekyan_morb_f1600)
-adibekyan_depleted_f1400_depletion = compositions.get_depletion(parent_reservoir=compositions.adibekyan_depleted_bsp_f1400,
-                                                          daughter_reservoir=compositions.adibekyan_morb_f1400)
-adibekyan_depleted_f1600_depletion = compositions.get_depletion(parent_reservoir=compositions.adibekyan_depleted_bsp_f1600,
-                                                          daughter_reservoir=compositions.adibekyan_morb_f1600)
+                                                       daughter_reservoir=compositions.adibekyan_morb_f1600)
+adibekyan_depleted_f1400_depletion = compositions.get_depletion(
+    parent_reservoir=compositions.adibekyan_depleted_bsp_f1400,
+    daughter_reservoir=compositions.adibekyan_morb_f1400)
+adibekyan_depleted_f1600_depletion = compositions.get_depletion(
+    parent_reservoir=compositions.adibekyan_depleted_bsp_f1600,
+    daughter_reservoir=compositions.adibekyan_morb_f1600)
 
 kepler_f1400_depletion = compositions.get_depletion(parent_reservoir=compositions.kepler_bsp,
-                                                          daughter_reservoir=compositions.kepler_morb_f1400)
+                                                    daughter_reservoir=compositions.kepler_morb_f1400)
 kepler_f1600_depletion = compositions.get_depletion(parent_reservoir=compositions.kepler_bsp,
-                                                          daughter_reservoir=compositions.kepler_morb_f1600)
+                                                    daughter_reservoir=compositions.kepler_morb_f1600)
 kepler_depleted_f1400_depletion = compositions.get_depletion(parent_reservoir=compositions.kepler_depleted_bsp_f1400,
-                                                          daughter_reservoir=compositions.kepler_morb_f1400)
+                                                             daughter_reservoir=compositions.kepler_morb_f1400)
 kepler_depleted_f1600_depletion = compositions.get_depletion(parent_reservoir=compositions.kepler_depleted_bsp_f1600,
-                                                          daughter_reservoir=compositions.kepler_morb_f1600)
+                                                             daughter_reservoir=compositions.kepler_morb_f1600)
 
 # adibekyan_regular_bsp_1600_morb_f1400_1200_buoyancy = pair_composition_to_buoyancy(
 #     buoyancy=adibekyan_f1400_1200_buoyancies, composition=adibekyan_f1400_depletion, oxide='sio2')
@@ -100,8 +100,6 @@ kepler_depleted_f1600_depletion = compositions.get_depletion(parent_reservoir=co
 # ax.set_xlabel("SiO2 Depletion (%)")
 # ax.set_ylabel("Buoyancy Force (N)")
 # ax.grid()
-
-
 
 
 adibekyan_regular_bsp_1600_morb_f1400_1200_buoyancy = pair_compositions_and_map_buoyancy(
@@ -143,7 +141,8 @@ yl = [(slope * xx) + intercept for xx in xl]
 sc = ax.scatter(x, y, c=b, marker="+", cmap='viridis')
 ax.scatter(earth_regular_bsp_1600_morb_f1400_1200_buoyancy[0][0], earth_regular_bsp_1600_morb_f1400_1200_buoyancy[0][1],
            marker='x', color='black', s=50, label='Sun-Derived Model (Undepleted)')
-ax.scatter(earth_depleted_bsp_1600_morb_f1400_1200_buoyancy[0][0], earth_depleted_bsp_1600_morb_f1400_1200_buoyancy[0][1],
+ax.scatter(earth_depleted_bsp_1600_morb_f1400_1200_buoyancy[0][0],
+           earth_depleted_bsp_1600_morb_f1400_1200_buoyancy[0][1],
            marker='*', color='black', s=50, label='Sun-Derived Model (Depleted)')
 ax.plot(xl, yl, color='red', linestyle="--", label="Best Fit")
 ax.add_patch(undepleted_ellipse)
@@ -195,8 +194,6 @@ ax.grid()
 # ax.set_ylabel("FeO Depletion (%)")
 # ax.legend()
 # ax.grid()
-
-
 
 
 plt.show()

@@ -19,17 +19,19 @@ m = Mineralogy()
 all_appearance_and_disappearance_temperatures = m.get_appearance_and_disappearance_temperatures()
 
 adibekyan_profiles = m.get_composition_at_appearance_or_disappearance(compositions=c,
-                                                            appearance_and_disappearance_temperatures=
-                                                            all_appearance_and_disappearance_temperatures[adibekyan_focus],
-                                                            name_keywords=adibekyan_keywords,
-                                                            appearance_or_disappearance=appearance_or_disappearance,
-                                                            fraction=fraction)
+                                                                      appearance_and_disappearance_temperatures=
+                                                                      all_appearance_and_disappearance_temperatures[
+                                                                          adibekyan_focus],
+                                                                      name_keywords=adibekyan_keywords,
+                                                                      appearance_or_disappearance=appearance_or_disappearance,
+                                                                      fraction=fraction)
 kepler_profiles = m.get_composition_at_appearance_or_disappearance(compositions=c,
-                                                            appearance_and_disappearance_temperatures=
-                                                            all_appearance_and_disappearance_temperatures[kepler_focus],
-                                                            name_keywords=kepler_keywords,
-                                                            appearance_or_disappearance=appearance_or_disappearance,
-                                                            fraction=fraction)
+                                                                   appearance_and_disappearance_temperatures=
+                                                                   all_appearance_and_disappearance_temperatures[
+                                                                       kepler_focus],
+                                                                   name_keywords=kepler_keywords,
+                                                                   appearance_or_disappearance=appearance_or_disappearance,
+                                                                   fraction=fraction)
 
 ax = Plots.plot_appearance_or_disappearance_temperatures_against_composition(
     appearance_or_disappearance_temperatures={**all_appearance_and_disappearance_temperatures[adibekyan_focus],

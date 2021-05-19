@@ -2,6 +2,7 @@ import os
 import shutil
 import pandas as pd
 
+
 class _AtomicWeights:
 
     def __init__(self):
@@ -40,6 +41,7 @@ class _OxideWeights:
         self.tio2 = (self.atomic_weights.ti * self.oxide_cation_numbers.ti) + (self.atomic_weights.o * 2)
         self.na2o = (self.atomic_weights.na * self.oxide_cation_numbers.na) + self.atomic_weights.o
 
+
 class HeFESTpFileWriter:
 
     def __init__(self, from_path, to_path, temperatures, material):
@@ -48,23 +50,23 @@ class HeFESTpFileWriter:
         self.temperatures = temperatures
         self.material = material
         self.BSP_FILE_FORMAT = "0,20,80,{},0,-2,0\n6,2,4,2\noxides\nSi          {}      5.39386    0\nMg          {}     2.71075    0\n" \
-                             "Fe          {}      .79840    0\nCa            {}      .31431    0\nAl            {}      .96680    0\n" \
-                             "Na            {}      .40654    0\n1,1,1\ninv251010\n47\nphase plg\n1\nan\nab\nphase sp\n0\nsp\nhc\n" \
-                             "phase opx\n1\nen\nfs\nmgts\nodi\nphase c2c\n0\nmgc2\nfec2\nphase cpx\n1\ndi\nhe\ncen\ncats\njd\n" \
-                             "phase gt\n0\npy\nal\ngr\nmgmj\njdmj\nphase cpv\n0\ncapv\nphase ol\n1\nfo\nfa\nphase wa\n0\nmgwa\nfewa\n" \
-                             "phase ri\n0\nmgri\nferi\nphase il\n0\nmgil\nfeil\nco\nphase pv\n0\nmgpv\nfepv\nalpv\nphase ppv\n0\nmppv\n" \
-                             "fppv\nappv\nphase cf\n0\nmgcf\nfecf\nnacf\nphase mw\n0\npe\nwu\nphase qtz\n1\nqtz\nphase coes\n0\ncoes\n" \
-                             "phase st\n0\nst\nphase apbo\n0\napbo\nphase ky\n0\nky\nphase neph\n0\nneph"
+                               "Fe          {}      .79840    0\nCa            {}      .31431    0\nAl            {}      .96680    0\n" \
+                               "Na            {}      .40654    0\n1,1,1\ninv251010\n47\nphase plg\n1\nan\nab\nphase sp\n0\nsp\nhc\n" \
+                               "phase opx\n1\nen\nfs\nmgts\nodi\nphase c2c\n0\nmgc2\nfec2\nphase cpx\n1\ndi\nhe\ncen\ncats\njd\n" \
+                               "phase gt\n0\npy\nal\ngr\nmgmj\njdmj\nphase cpv\n0\ncapv\nphase ol\n1\nfo\nfa\nphase wa\n0\nmgwa\nfewa\n" \
+                               "phase ri\n0\nmgri\nferi\nphase il\n0\nmgil\nfeil\nco\nphase pv\n0\nmgpv\nfepv\nalpv\nphase ppv\n0\nmppv\n" \
+                               "fppv\nappv\nphase cf\n0\nmgcf\nfecf\nnacf\nphase mw\n0\npe\nwu\nphase qtz\n1\nqtz\nphase coes\n0\ncoes\n" \
+                               "phase st\n0\nst\nphase apbo\n0\napbo\nphase ky\n0\nky\nphase neph\n0\nneph"
         self.MORB_FILE_FORMAT = "0,20,80,{},0,-2,0\n6,2,4,2\noxides\nSi           {}     5.33159    0\n" \
-                             "Mg           {}     1.37685    0\nFe           {}      .55527    0\n" \
-                             "Ca           {}     1.33440    0\nAl           {}     1.82602    0\n" \
-                             "Na           {}     0.71860    0\n1,1,1\ninv251010\n47\nphase plg\n1\nan\nab\nphase sp\n0\nsp\n" \
-                             "hc\nphase opx\n1\nen\nfs\nmgts\nodi\nphase c2c\n0\nmgc2\nfec2\nphase cpx\n1\ndi\nhe\ncen\ncats\n" \
-                             "jd\nphase gt\n0\npy\nal\ngr\nmgmj\njdmj\nphase cpv\n0\ncapv\nphase ol\n1\nfo\nfa\nphase wa\n0\n" \
-                             "mgwa\nfewa\nphase ri\n0\nmgri\nferi\nphase il\n0\nmgil\nfeil\nco\nphase pv\n0\nmgpv\nfepv\nalpv\n" \
-                             "phase ppv\n0\nmppv\nfppv\nappv\nphase cf\n0\nmgcf\nfecf\nnacf\nphase mw\n0\npe\nwu\nphase qtz\n" \
-                             "1\nqtz\nphase coes\n0\ncoes\nphase st\n0\nst\nphase apbo\n0\napbo\nphase ky\n0\nky\nphase neph\n" \
-                             "0\nneph"
+                                "Mg           {}     1.37685    0\nFe           {}      .55527    0\n" \
+                                "Ca           {}     1.33440    0\nAl           {}     1.82602    0\n" \
+                                "Na           {}     0.71860    0\n1,1,1\ninv251010\n47\nphase plg\n1\nan\nab\nphase sp\n0\nsp\n" \
+                                "hc\nphase opx\n1\nen\nfs\nmgts\nodi\nphase c2c\n0\nmgc2\nfec2\nphase cpx\n1\ndi\nhe\ncen\ncats\n" \
+                                "jd\nphase gt\n0\npy\nal\ngr\nmgmj\njdmj\nphase cpv\n0\ncapv\nphase ol\n1\nfo\nfa\nphase wa\n0\n" \
+                                "mgwa\nfewa\nphase ri\n0\nmgri\nferi\nphase il\n0\nmgil\nfeil\nco\nphase pv\n0\nmgpv\nfepv\nalpv\n" \
+                                "phase ppv\n0\nmppv\nfppv\nappv\nphase cf\n0\nmgcf\nfecf\nnacf\nphase mw\n0\npe\nwu\nphase qtz\n" \
+                                "1\nqtz\nphase coes\n0\ncoes\nphase st\n0\nst\nphase apbo\n0\napbo\nphase ky\n0\nky\nphase neph\n" \
+                                "0\nneph"
 
     def __oxide_pct_to_cation_pct(self, df, row):
         mgo = self.df['MgO'][row].item()
@@ -106,7 +108,6 @@ class HeFESTpFileWriter:
             'ti': ti
         }
 
-
     def writefiles(self):
         for t in self.temperatures:
             print(t)
@@ -128,12 +129,18 @@ class HeFESTpFileWriter:
 
                     if self.material.lower() == 'bsp':
                         bsp_contents = self.BSP_FILE_FORMAT.format(t, si, mg, fe, ca, al, na)
-                        with open(self.to_path + "/" + str(t) + "/{}_{}_{}_HeFESTo_Input_File.txt".format(star, self.material.upper(), t), 'w') as infile:
+                        with open(self.to_path + "/" + str(t) + "/{}_{}_{}_HeFESTo_Input_File.txt".format(star,
+                                                                                                          self.material.upper(),
+                                                                                                          t),
+                                  'w') as infile:
                             infile.write(bsp_contents)
                             infile.close()
                     else:
                         morb_contents = self.MORB_FILE_FORMAT.format(t, si, mg, fe, ca, al, na)
-                        with open(self.to_path + "/" + str(t) + "/{}_{}_{}_HeFESTo_Input_File.txt".format(star, self.material.upper(), t), 'w') as infile:
+                        with open(self.to_path + "/" + str(t) + "/{}_{}_{}_HeFESTo_Input_File.txt".format(star,
+                                                                                                          self.material.upper(),
+                                                                                                          t),
+                                  'w') as infile:
                             infile.write(morb_contents)
                             infile.close()
 

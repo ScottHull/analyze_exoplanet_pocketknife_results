@@ -4,12 +4,13 @@ from scipy import integrate
 import matplotlib.pyplot as plt
 
 DEPTHS = [0, 6, 19.7, 28.9, 36.4, 43.88, 51.34, 58.81, 66.36, 73.94, 81.5, 88.97, 96.45, 103.93, 111.41,
-                    118.92, 126.47, 134.01, 141.55, 149.09, 156.64, 164.18, 171.72, 179.27, 186.79, 194.27, 201.75,
-                    209.23, 216.71, 224.09, 231.4, 238.7, 246.01, 253.31, 260.62, 267.9, 275.16, 282.42, 289.68,
-                    296.94, 304.19, 311.41, 318.44, 325.47, 332.5, 339.53, 346.56, 353.59, 360.62, 367.66, 374.69,
-                    381.72, 388.75, 395.78, 402.78, 409.72, 416.67, 423.61, 430.56, 437.5, 444.44, 451.32, 457.89,
-                    464.47, 471.05, 477.63, 484.21, 490.79, 497.37, 503.75, 510, 516.25, 522.5, 528.75, 535, 541.25,
-                    547.5, 553.95, 560.53, 567.11, 573.68]
+          118.92, 126.47, 134.01, 141.55, 149.09, 156.64, 164.18, 171.72, 179.27, 186.79, 194.27, 201.75,
+          209.23, 216.71, 224.09, 231.4, 238.7, 246.01, 253.31, 260.62, 267.9, 275.16, 282.42, 289.68,
+          296.94, 304.19, 311.41, 318.44, 325.47, 332.5, 339.53, 346.56, 353.59, 360.62, 367.66, 374.69,
+          381.72, 388.75, 395.78, 402.78, 409.72, 416.67, 423.61, 430.56, 437.5, 444.44, 451.32, 457.89,
+          464.47, 471.05, 477.63, 484.21, 490.79, 497.37, 503.75, 510, 516.25, 522.5, 528.75, 535, 541.25,
+          547.5, 553.95, 560.53, 567.11, 573.68]
+
 
 class Plots:
 
@@ -51,6 +52,7 @@ class Plots:
         # self.kepler_depleted_f1600_1200_ax = self.kepler_depleted_f1600_fig.add_subplot(311)
         # self.kepler_depleted_f1600_1400_ax = self.kepler_depleted_f1600_fig.add_subplot(312)
         # self.kepler_depleted_f1600_1600_ax = self.kepler_depleted_f1600_fig.add_subplot(313)
+
 
 class Inspect(Plots):
 
@@ -181,10 +183,11 @@ class Inspect(Plots):
                 buoyancy_force = integrate.simps(sublist_density_diffs, d) * 1000 * 1000 * plate_thickness * gravity
                 buoyancies.append(buoyancy_force)
             else:
-                buoyancy_force = integrate.simps(density_differentials, DEPTHS) * 1000 * 1000 * plate_thickness * gravity
+                buoyancy_force = integrate.simps(density_differentials,
+                                                 DEPTHS) * 1000 * 1000 * plate_thickness * gravity
                 buoyancies.append(buoyancy_force)
         return buoyancies
-        
+
     def __plot_buoyancy(self, bsp_file, morb_file, p, label, plate_thickness=10 * 1000, gravity=9.8):
         print(label)
 
@@ -203,7 +206,7 @@ class Inspect(Plots):
         earth_morb_row = self.__get_earth_row(file=morb_file)
         earth_density_differential = [float(x) - float(y) for x, y in zip(earth_morb_row[1:], earth_bsp_row[1:])]
         earth_buoyancy = self.__compute_buoyancy_at_depth(density_differentials=earth_density_differential,
-                                                                  plate_thickness=plate_thickness, gravity=gravity)
+                                                          plate_thickness=plate_thickness, gravity=gravity)
 
         for bsp_row in bsp_file:
             star = bsp_row[0]
@@ -247,66 +250,64 @@ class Inspect(Plots):
         # self.__plot_density(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1200_1200,
         #                      label="Adibekyan BSP@1600 MORB_F1200@1200", p=self.adibekyan_f1200_1200_ax)
         self.__plot_density(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1400_1200,
-                             label="Adibekyan BSP@1600 MORB_F1400@1200", p=self.adibekyan_f1400_1200_ax)
+                            label="Adibekyan BSP@1600 MORB_F1400@1200", p=self.adibekyan_f1400_1200_ax)
         self.__plot_density(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1400_1400,
-                             label="Adibekyan BSP@1600 MORB_F1400@1400", p=self.adibekyan_f1400_1400_ax)
+                            label="Adibekyan BSP@1600 MORB_F1400@1400", p=self.adibekyan_f1400_1400_ax)
         self.__plot_density(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1600_1200,
-                             label="Adibekyan BSP@1600 MORB_F1600@1200", p=self.adibekyan_f1600_1200_ax)
+                            label="Adibekyan BSP@1600 MORB_F1600@1200", p=self.adibekyan_f1600_1200_ax)
         self.__plot_density(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1600_1400,
-                             label="Adibekyan BSP@1600 MORB_F1600@1400", p=self.adibekyan_f1600_1400_ax)
+                            label="Adibekyan BSP@1600 MORB_F1600@1400", p=self.adibekyan_f1600_1400_ax)
         self.__plot_density(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1600_1600,
-                             label="Adibekyan BSP@1600 MORB_F1600@1600", p=self.adibekyan_f1600_1600_ax)
-
+                            label="Adibekyan BSP@1600 MORB_F1600@1600", p=self.adibekyan_f1600_1600_ax)
 
         # self.__plot_density(bsp_file=self.kepler_bsp_1600, morb_file=self.kepler_morb_f1200_1200,
         #                      label="Kepler BSP@1600 MORB_F1200@1200", p=self.kepler_f1200_1200_ax)
         self.__plot_density(bsp_file=self.kepler_bsp_1600, morb_file=self.kepler_morb_f1400_1200,
-                             label="Kepler BSP@1600 MORB_F1400@1200", p=self.kepler_f1400_1200_ax)
+                            label="Kepler BSP@1600 MORB_F1400@1200", p=self.kepler_f1400_1200_ax)
         self.__plot_density(bsp_file=self.kepler_bsp_1600, morb_file=self.kepler_morb_f1400_1400,
-                             label="Kepler BSP@1600 MORB_F1400@1400", p=self.kepler_f1400_1400_ax)
+                            label="Kepler BSP@1600 MORB_F1400@1400", p=self.kepler_f1400_1400_ax)
         self.__plot_density(bsp_file=self.kepler_bsp_1600, morb_file=self.kepler_morb_f1600_1200,
-                             label="Kepler BSP@1600 MORB_F1600@1200", p=self.kepler_f1600_1200_ax)
+                            label="Kepler BSP@1600 MORB_F1600@1200", p=self.kepler_f1600_1200_ax)
         self.__plot_density(bsp_file=self.kepler_bsp_1600, morb_file=self.kepler_morb_f1600_1400,
-                             label="Kepler BSP@1600 MORB_F1600@1400", p=self.kepler_f1600_1400_ax)
+                            label="Kepler BSP@1600 MORB_F1600@1400", p=self.kepler_f1600_1400_ax)
         self.__plot_density(bsp_file=self.kepler_bsp_1600, morb_file=self.kepler_morb_f1600_1600,
-                             label="Kepler BSP@1600 MORB_F1600@1600", p=self.kepler_f1600_1600_ax)
+                            label="Kepler BSP@1600 MORB_F1600@1600", p=self.kepler_f1600_1600_ax)
 
         plt.tight_layout()
         plt.show()
-        
 
     def analyze_buoyancy(self):
         # self.__plot_buoyancy(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1200_1200,
         #             label="Adibekyan BSP@1600 MORB_F1200@1200", p=self.adibekyan_f1200_1200_ax)
         self.__plot_buoyancy(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1400_1200,
-                    label="Adibekyan BSP@1600 MORB_F1400@1200", p=self.adibekyan_f1400_1200_ax)
+                             label="Adibekyan BSP@1600 MORB_F1400@1200", p=self.adibekyan_f1400_1200_ax)
         self.__plot_buoyancy(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1400_1400,
-                    label="Adibekyan BSP@1600 MORB_F1400@1400", p=self.adibekyan_f1400_1400_ax)
+                             label="Adibekyan BSP@1600 MORB_F1400@1400", p=self.adibekyan_f1400_1400_ax)
         self.__plot_buoyancy(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1600_1200,
-                    label="Adibekyan BSP@1600 MORB_F1600@1200", p=self.adibekyan_f1600_1200_ax)
+                             label="Adibekyan BSP@1600 MORB_F1600@1200", p=self.adibekyan_f1600_1200_ax)
         self.__plot_buoyancy(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1600_1400,
-                    label="Adibekyan BSP@1600 MORB_F1600@1400", p=self.adibekyan_f1600_1400_ax)
+                             label="Adibekyan BSP@1600 MORB_F1600@1400", p=self.adibekyan_f1600_1400_ax)
         self.__plot_buoyancy(bsp_file=self.adibekyan_bsp_1600, morb_file=self.adibekyan_morb_f1600_1600,
-                    label="Adibekyan BSP@1600 MORB_F1600@1600", p=self.adibekyan_f1600_1600_ax)
+                             label="Adibekyan BSP@1600 MORB_F1600@1600", p=self.adibekyan_f1600_1600_ax)
 
         # self.__plot_buoyancy(bsp_file=self.kepler_bsp_1200, morb_file=self.kepler_morb_f1200_1200,
         #             label="Kepler BSP@1600 MORB_F1200@1200", p=self.kepler_f1200_1200_ax)
         self.__plot_buoyancy(bsp_file=self.kepler_bsp_1200, morb_file=self.kepler_morb_f1400_1200,
-                    label="Kepler BSP@1600 MORB_F1400@1200", p=self.kepler_f1400_1200_ax)
+                             label="Kepler BSP@1600 MORB_F1400@1200", p=self.kepler_f1400_1200_ax)
         self.__plot_buoyancy(bsp_file=self.kepler_bsp_1200, morb_file=self.kepler_morb_f1400_1400,
-                    label="Kepler BSP@1600 MORB_F1400@1400", p=self.kepler_f1400_1400_ax)
+                             label="Kepler BSP@1600 MORB_F1400@1400", p=self.kepler_f1400_1400_ax)
         self.__plot_buoyancy(bsp_file=self.kepler_bsp_1200, morb_file=self.kepler_morb_f1600_1200,
-                    label="Kepler BSP@1600 MORB_F1600@1200", p=self.kepler_f1600_1200_ax)
+                             label="Kepler BSP@1600 MORB_F1600@1200", p=self.kepler_f1600_1200_ax)
         self.__plot_buoyancy(bsp_file=self.kepler_bsp_1200, morb_file=self.kepler_morb_f1600_1400,
-                    label="Kepler BSP@1600 MORB_F1600@1400", p=self.kepler_f1600_1400_ax)
+                             label="Kepler BSP@1600 MORB_F1600@1400", p=self.kepler_f1600_1400_ax)
         self.__plot_buoyancy(bsp_file=self.kepler_bsp_1200, morb_file=self.kepler_morb_f1600_1600,
-                    label="Kepler BSP@1600 MORB_F1600@1600", p=self.kepler_f1600_1600_ax)
+                             label="Kepler BSP@1600 MORB_F1600@1600", p=self.kepler_f1600_1600_ax)
 
         plt.tight_layout()
         plt.show()
 
 
 i = Inspect(reg_path="/Users/scotthull/Desktop/exoplanets/Densities/BSP_MORB",
-        depleted_path="/Users/scotthull/Desktop/exoplanets/Densities/Depleted_Lithosphere")
+            depleted_path="/Users/scotthull/Desktop/exoplanets/Densities/Depleted_Lithosphere")
 i.analyze_buoyancy()
 # i.analyze_density()

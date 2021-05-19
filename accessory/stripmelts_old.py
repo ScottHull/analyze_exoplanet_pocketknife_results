@@ -3,7 +3,6 @@ import shutil
 import csv
 import pandas as pd
 
-
 na_atwt = 22.98976928
 mg_atwt = 24.305
 al_atwt = 26.9815386
@@ -83,11 +82,6 @@ def liqComp(infile):
                     return []
 
 
-
-
-
-
-
 if __name__ == "__main__":
     header = "Star,Pressure,Temperature,mass,S,H,V,Cp,viscosity,SiO2,TiO2,Al2O3,Fe2O3,Cr2O3,FeO,MgO,CaO,Na2O"
     if "logfile.csv" in os.listdir(os.getcwd()):
@@ -106,7 +100,6 @@ if __name__ == "__main__":
             compstr = star + "," + ",".join(str(z) for z in comp)
             outfile.write(compstr + '\n')
     outfile.close()
-
 
     if "MORB_Recalc_Bulkfile.csv" in os.listdir(os.getcwd()):
         os.remove("MORB_Recalc_Bulkfile.csv")
@@ -142,11 +135,10 @@ if __name__ == "__main__":
 
             md1_header = "1,sio2,tio2,al2o3,fe2o3,cr2o3,cr2o3,feo,mgo,cao,na2o"
             md1 = ",{},{},{},{},{},{},{},{},{}".format(sio2_in, tio2_in, al2o3_in, fe2o3_in,
-                                cr2o3_in, feo_in, mgo_in, cao_in, na2o_in)
+                                                       cr2o3_in, feo_in, mgo_in, cao_in, na2o_in)
             morb_debug.write("{}\n{}\n".format(md1_header, md1))
 
-
-            wt_sio2_in = (sio2_in/100.0) * mass
+            wt_sio2_in = (sio2_in / 100.0) * mass
             wt_tio2_in = (tio2_in / 100.0) * mass
             wt_al2o3_in = (al2o3_in / 100.0) * mass
             wt_fe2o3_in = (fe2o3_in / 100.0) * mass
@@ -160,7 +152,7 @@ if __name__ == "__main__":
 
             md2_header = "2,sio2,tio2,al2o3,fe2o3,cr2o3,feo,mgo,cao,na2o"
             md2 = ",{},{},{},{},{},{},{},{},{}".format(wt_sio2_in, wt_tio2_in, wt_al2o3_in, wt_fe2o3_in,
-                        wt_cr2o3_in, wt_feo_in, wt_mgo_in, wt_cao_in, wt_na2o_in)
+                                                       wt_cr2o3_in, wt_feo_in, wt_mgo_in, wt_cao_in, wt_na2o_in)
             morb_debug.write("{}\n{}\n".format(md2_header, md2))
 
             sio2_moles = wt_sio2_in / sio2_molwt
@@ -177,7 +169,7 @@ if __name__ == "__main__":
 
             md3_header = "3,sio2,tio2,al2o3,fe2o3,feo,mgo,cao,na2o"
             md3 = ",{},{},{},{},{},{},{},{},{}".format(sio2_moles, tio2_moles, al2o3_moles, fe2o3_moles,
-                    cr2o3_moles, feo_moles, mgo_moles, cao_moles, na2o_moles)
+                                                       cr2o3_moles, feo_moles, mgo_moles, cao_moles, na2o_moles)
             morb_debug.write("{}\n{}\n".format(md3_header, md3))
 
             si_cations = sio2_moles * num_sio2_cations
@@ -189,12 +181,15 @@ if __name__ == "__main__":
             mg_cations = mgo_moles * num_mgo_cations
             ca_cations = cao_moles * num_cao_cations
             na_cations = na2o_moles * num_na2o_cations
-            sum_cations = (si_cations + ti_cations + al_cations + fe_fe2o3_cations + cr_cations + fe_feo_cations + mg_cations +
-                              ca_cations + na_cations)
+            sum_cations = (
+                        si_cations + ti_cations + al_cations + fe_fe2o3_cations + cr_cations + fe_feo_cations + mg_cations +
+                        ca_cations + na_cations)
 
             md4_header = "4,si,ti,al,fe,cr,fe,mg,ca,na,sum"
-            md4 = ",{},{},{},{},{},{},{},{},{},{}".format(si_cations, ti_cations, al_cations, fe_fe2o3_cations, cr_cations,
-                    fe_feo_cations, mg_cations, na_cations, na_cations, sum_cations)
+            md4 = ",{},{},{},{},{},{},{},{},{},{}".format(si_cations, ti_cations, al_cations, fe_fe2o3_cations,
+                                                          cr_cations,
+                                                          fe_feo_cations, mg_cations, na_cations, na_cations,
+                                                          sum_cations)
             morb_debug.write("{}\n{}\n".format(md4_header, md4))
 
             # fe2o3 --> feo recalc
@@ -205,8 +200,6 @@ if __name__ == "__main__":
             md5_header = "5,total_mol_fe,total_wt_fe,total_wt_feo"
             md5 = ",{},{},{}".format(total_mol_fe, total_wt_fe, total_wt_feo)
             morb_debug.write("{}\n{}\n".format(md5_header, md5))
-
-
 
             # unnormalized wt%
             unnorm_sum = (wt_sio2_in + wt_tio2_in + wt_al2o3_in + total_wt_feo +
@@ -221,18 +214,21 @@ if __name__ == "__main__":
             norm_wt_mgo = wt_mgo_in / unnorm_sum
             norm_wt_cao = wt_cao_in / unnorm_sum
             norm_wt_na2o = wt_na2o_in / unnorm_sum
-            norm_sum_nomgofix = (norm_wt_sio2 + norm_wt_tio2 + norm_wt_al2o3 + norm_wt_feo + norm_wt_cr2o3 + norm_wt_mgo +
-                                    norm_wt_cao + norm_wt_na2o)
+            norm_sum_nomgofix = (
+                        norm_wt_sio2 + norm_wt_tio2 + norm_wt_al2o3 + norm_wt_feo + norm_wt_cr2o3 + norm_wt_mgo +
+                        norm_wt_cao + norm_wt_na2o)
 
             md6_header = "6,sio2,tio2,al2o3,feo,cr2o3,mgo,cao,na2o,sum"
             md6 = ",{},{},{},{},{},{},{},{},{}".format(norm_wt_sio2, norm_wt_tio2, norm_wt_al2o3,
-                    norm_wt_feo, norm_wt_cr2o3, norm_wt_mgo, norm_wt_cao, norm_wt_na2o, norm_sum_nomgofix)
+                                                       norm_wt_feo, norm_wt_cr2o3, norm_wt_mgo, norm_wt_cao,
+                                                       norm_wt_na2o, norm_sum_nomgofix)
             morb_debug.write("{}\n{}\n".format(md6_header, md6))
 
             # mgo fix
             norm_wt_mgo_fix = norm_wt_mgo * mgo_fix
-            norm_sum_mgofix = (norm_wt_sio2 + norm_wt_tio2 + norm_wt_al2o3 + norm_wt_feo + norm_wt_cr2o3 + norm_wt_mgo_fix +
-                                    norm_wt_cao + norm_wt_na2o)
+            norm_sum_mgofix = (
+                        norm_wt_sio2 + norm_wt_tio2 + norm_wt_al2o3 + norm_wt_feo + norm_wt_cr2o3 + norm_wt_mgo_fix +
+                        norm_wt_cao + norm_wt_na2o)
 
             md7_header = "7,mgo_fix,norm_wt_mgo_fx,norm_sum_mgofix"
             md7 = ",{},{},{}".format(mgo_fix, norm_wt_mgo_fix, norm_sum_mgofix)
@@ -248,25 +244,27 @@ if __name__ == "__main__":
             mgo_wtpct = (norm_wt_mgo_fix / norm_sum_mgofix) * 100
             cao_wtpct = (norm_wt_cao / norm_sum_mgofix) * 100
             na2o_wtpct = (norm_wt_na2o / norm_sum_mgofix) * 100
-            sum_wtpct = (sio2_wtpct + tio2_wtpct + al2o3_wtpct + feo_wtpct + cr2o3_wtpct + mgo_wtpct + cao_wtpct + na2o_wtpct)
+            sum_wtpct = (
+                        sio2_wtpct + tio2_wtpct + al2o3_wtpct + feo_wtpct + cr2o3_wtpct + mgo_wtpct + cao_wtpct + na2o_wtpct)
 
             md8_header = "8,sio2,tio2,al2o3,feo,cr2o3,mgo,cao,na2o,sum"
             md8 = ",{},{},{},{},{},{},{},{},{}".format(sio2_wtpct, tio2_wtpct, al2o3_wtpct, feo_wtpct,
-                            cr2o3_wtpct, mgo_wtpct, cao_wtpct, na2o_wtpct, sum_wtpct)
+                                                       cr2o3_wtpct, mgo_wtpct, cao_wtpct, na2o_wtpct, sum_wtpct)
             morb_debug.write("{}\n{}\n".format(md8_header, md8))
 
-            chem_to_outfile = "{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(star_name, pressure, temperature, mass, sio2_wtpct,
-                                    tio2_wtpct, al2o3_wtpct, cr2o3_wtpct, feo_wtpct, mgo_wtpct, cao_wtpct, na2o_wtpct, sum_wtpct)
+            chem_to_outfile = "{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(star_name, pressure, temperature, mass,
+                                                                                sio2_wtpct,
+                                                                                tio2_wtpct, al2o3_wtpct, cr2o3_wtpct,
+                                                                                feo_wtpct, mgo_wtpct, cao_wtpct,
+                                                                                na2o_wtpct, sum_wtpct)
 
             morb_recalc_outfile.write(chem_to_outfile)
 
         except:
             pass
 
-
     morb_debug.close()
     morb_recalc_outfile.close()
-
 
     df = pd.read_csv("MORB_Recalc_Bulkfile.csv")
     for row in df.index:

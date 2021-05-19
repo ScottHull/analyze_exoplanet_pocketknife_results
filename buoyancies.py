@@ -19,8 +19,10 @@ runs = [
 for r in runs:
     bsp_temp, morb_ftemp, initial_temp = r[0], r[1], r[2]
 
-    kepler_path = "C:/Users/Scott/Desktop/3_26_2021/kepler/specific_buoyancy/Kepler_BSP_{}_MORB_F{}_{}.csv".format(bsp_temp, morb_ftemp, initial_temp)
-    adibekyan_path = "C:/Users/Scott/Desktop/3_26_2021/adibekyan/specific_buoyancy/Adibekyan_BSP_{}_MORB_F{}_{}.csv".format(bsp_temp, morb_ftemp, initial_temp)
+    kepler_path = "C:/Users/Scott/Desktop/3_26_2021/kepler/specific_buoyancy/Kepler_BSP_{}_MORB_F{}_{}.csv".format(
+        bsp_temp, morb_ftemp, initial_temp)
+    adibekyan_path = "C:/Users/Scott/Desktop/3_26_2021/adibekyan/specific_buoyancy/Adibekyan_BSP_{}_MORB_F{}_{}.csv".format(
+        bsp_temp, morb_ftemp, initial_temp)
 
     buoyancy_pass = []
     buoyancy_fail = []

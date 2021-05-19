@@ -92,7 +92,7 @@ class Thickness:
                     initial = initial_dict[s]
                     mass_fractions.update({s: (final / initial) * 100.0})
         return mass_fractions
-    
+
     def calc_morb_mass_fraction(self):
         return {
             'adibekyan_f1400_mass_fraction': self.adibekyan_f1400_mass_fraction,
