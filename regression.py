@@ -137,18 +137,16 @@ def regression(df, element_1, element_2, regression_headers_x):
     return d, regr.intercept_
 
 
-def predict(intercept, input_df, coefficients):
+def predict(intercept, x_variables, input_df, coefficients):
     y = []
-    input_vars = list(input_df.keys())
     for row in input_df.index:
         s = 0
-        for i in input_vars:
+        for i in x_variables:
             coeff = coefficients[i]
             val = input_df[i][row]
             s += coeff * val
         y.append(s + intercept)
     return y
-
 
 
 composition_path = "C:/Users/Scott/Desktop/3_26_2021/summary"
@@ -158,8 +156,9 @@ element_2 = "FeO"
 
 element_1_cation = element_1[0:2].lower()
 element_2_cation = element_2[0:2].lower()
-regression_dependent_variables = ['bsp_temp', 'morb_f_temp', 'morb_temp',
-                                  '{}/{}'.format(element_1_cation, element_2_cation)]
+# regression_dependent_variables = ['bsp_temp', 'morb_f_temp', 'morb_temp',
+#                                   '{}/{}'.format(element_1_cation, element_2_cation)]
+regression_dependent_variables = ['{}/{}'.format(element_1_cation, element_2_cation)]
 
 all_bsp_data = []
 all_morb_data = []
@@ -183,6 +182,56 @@ all_morb_data = [item for sublist in all_morb_data for item in sublist]
 reform_df_bsp = reformat_data(data=all_bsp_data, element_1=element_1, element_2=element_2)
 reform_df_morb = reformat_data(data=all_morb_data, element_1=element_1, element_2=element_2)
 bsp_coeffs, bsp_intercept = regression(df=reform_df_bsp, element_1=element_1, element_2=element_2,
-                        regression_headers_x=regression_dependent_variables)
+                                       regression_headers_x=regression_dependent_variables)
 morb_coeffs, morb_intercept = regression(df=reform_df_morb, element_1=element_1, element_2=element_2,
-                         regression_headers_x=regression_dependent_variables)
+                                         regression_headers_x=regression_dependent_variables)
+bsp_model = predict(intercept=bsp_intercept, input_df=reform_df_bsp, coefficients=bsp_coeffs,
+                    x_variables=regression_dependent_variables)
+morb_model = predict(intercept=morb_intercept, input_df=reform_df_morb, coefficients=morb_coeffs,
+                     x_variables=regression_dependent_variables)
+
+fig = plt.figure(figsize=(16, 9))
+ax = fig.add_subplot(111)
+ax.scatter(
+    [i[5] / i[6] for i in all_bsp_data],
+    [i[7] for i in all_bsp_data],
+    marker="+",
+    color='black',
+    label='dataset'
+)
+ax.scatter(
+    [i[5] / i[6] for i in all_bsp_data],
+    bsp_model,
+    marker="+",
+    color='red',
+    label='model'
+)
+ax.set_xlabel('{}/{} (cation %)'.format(element_1_cation, element_2_cation))
+ax.set_ylabel("Specific Buoyancy @ 573.68 km")
+ax.set_title("BSP")
+ax.grid()
+ax.legend()
+
+fig2 = plt.figure(figsize=(16, 9))
+ax2 = fig2.add_subplot(111)
+ax2.scatter(
+    [i[5] / i[6] for i in all_morb_data],
+    [i[7] for i in all_morb_data],
+    marker="+",
+    color='black',
+    label='dataset'
+)
+ax2.scatter(
+    [i[5] / i[6] for i in all_morb_data],
+    morb_model,
+    marker="+",
+    color='red',
+    label='model'
+)
+ax2.set_xlabel('{}/{} (cation %)'.format(element_1_cation, element_2_cation))
+ax2.set_ylabel("Specific Buoyancy @ 573.68 km")
+ax2.set_title("MORB")
+ax2.grid()
+ax2.legend()
+
+plt.show()
