@@ -84,19 +84,22 @@ def liqComp(infile):
 
 class StripMELTS:
 
-    def __init__(self, path_to_files):
-        self.to_path = path_to_files
+    def __init__(self, from_path, to_path, name, rock_type):
+        self.from_path = from_path
+        self.to_path = to_path
+        self.name = name
+        self.rock_type = rock_type  # BSP or MORB
         self.header = "Star,Pressure,Temperature,mass,S,H,V,Cp,viscosity,SiO2,TiO2,Al2O3,Fe2O3,Cr2O3,FeO,MgO,CaO,Na2O"
 
-        if "logfile.csv" in os.listdir(os.getcwd()):
-            os.remove("logfile.csv")
+        if "logfile.csv" in os.listdir(self.to_path):
+            os.remove(self.to_path + "/logfile.csv")
 
     def log_MELTS_outputs(self):
-        outfile = open("logfile.csv", 'a')
+        outfile = open(self.to_path + "/logfile.csv", 'a')
         outfile.write(self.header + "\n")
-        for i in os.listdir(self.to_path):
+        for i in os.listdir(self.from_path):
             if "OUTPUT" in i:
-                path = self.to_path + "/" + i
+                path = self.from_path + "/" + i
                 star = i.split("_")[0]
                 comp = liqComp(path)
                 compstr = star + "," + ",".join(str(z) for z in comp)
@@ -105,21 +108,19 @@ class StripMELTS:
 
     def recalculate_MELTS(self):
 
-        if "MORB_Recalc_Bulkfile.csv" in os.listdir(os.getcwd()):
-            os.remove("MORB_Recalc_Bulkfile.csv")
-        else:
-            pass
+        if "MORB_Recalc_Bulkfile.csv" in os.listdir(self.to_path):
+            os.remove(self.to_path + "/MORB_Recalc_Bulkfile.csv")
 
-        if "morb_debug.csv" in os.listdir(os.getcwd()):
-            os.remove("morb_debug.csv")
+        if "morb_debug.csv" in os.listdir(self.to_path):
+            os.remove(self.to_path + "/morb_debug.csv")
 
-        morb_debug = open("morb_debug.csv", 'a')
+        morb_debug = open(self.to_path + "/morb_debug.csv", 'a')
 
-        morb_recalc_outfile = open("MORB_Recalc_Bulkfile.csv", 'a')
+        morb_recalc_outfile = open(self.to_path + "/MORB_Recalc_Bulkfile.csv", 'a')
         morb_recalc_outfile_header = "Star,Pressure,Temperature,Mass,SiO2,TiO2,Al2O3,Cr2O3,FeO,MgO,CaO,Na2O,SUM\n"
         morb_recalc_outfile.write(morb_recalc_outfile_header)
 
-        df_morb_chem = pd.read_csv("logfile.csv")
+        df_morb_chem = pd.read_csv(self.to_path + "/logfile.csv")
         for row in df_morb_chem.index:
             star_name = df_morb_chem["Star"][row]
             pressure = float(df_morb_chem["Pressure"][row])
@@ -263,8 +264,21 @@ class StripMELTS:
 
             morb_recalc_outfile.write(chem_to_outfile)
 
+base_path = "/Users/scotthull/Downloads/kepler/"
+samples = [
+    # from path, to path, rock type
+    # ("bsp/adibekyan_Completed_BSP_MELTS_Files", "bsp", "BSP"),
+    ("morb/f1200/kepler_star_compositions_atomic_mole_pct_Completed_MORB_MELTS_Files", "morb/f1200", "MORB"),
+    ("morb/f1400/kepler_star_compositions_atomic_mole_pct_Completed_MORB_MELTS_Files", "morb/f1400", "MORB"),
+    ("morb/f1600/kepler_star_compositions_atomic_mole_pct_Completed_MORB_MELTS_Files", "morb/f1600", "MORB"),
+]
 
-s = StripMELTS(
-    path_to_files="C:/Users/Scott/Desktop/3_26_2021/adibekyan/morb/f1600/adibekyan_Completed_MORB_MELTS_Files")
-s.log_MELTS_outputs()
-s.recalculate_MELTS()
+for fpath, tpath, t in samples:
+    s = StripMELTS(
+        from_path=base_path + fpath,
+        to_path=base_path + tpath,
+        name="kepler",
+        rock_type=t
+    )
+    s.log_MELTS_outputs()
+    s.recalculate_MELTS()

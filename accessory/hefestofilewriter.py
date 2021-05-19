@@ -146,36 +146,36 @@ class HeFESTpFileWriter:
 
 
 df_paths = [
-    "/Users/scotthull/Downloads/adibekyan/bsp/adibekyan_BSP_Composition.csv",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adibekyan_morb_compositions_f1200.csv",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adibekyan_morb_compositions_f1400.csv",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adibekyan_morb_compositions_f1600.csv",
+    # "/Users/scotthull/Downloads/adibekyan/bsp/adibekyan_BSP_Composition.csv",
+    # "/Users/scotthull/Downloads/adibekyan/morb/f1200/MORB_Recalc_Bulkfile.csv",
+    # "/Users/scotthull/Downloads/adibekyan/morb/f1400/MORB_Recalc_Bulkfile.csv",
+    # "/Users/scotthull/Downloads/adibekyan/morb/f1600/MORB_Recalc_Bulkfile.csv",
     # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_bsp_compositions.csv",
-    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_morb_compositions_f1200.csv",
-    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_morb_compositions_f1400.csv",
-    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_morb_compositions_f1600.csv"
+    "/Users/scotthull/Downloads/kepler/morb/f1200/MORB_Recalc_Bulkfile.csv",
+    "/Users/scotthull/Downloads/kepler/morb/f1400/MORB_Recalc_Bulkfile.csv",
+    "/Users/scotthull/Downloads/kepler/morb/f1600/MORB_Recalc_Bulkfile.csv",
 ]
 
 temperatures = [
-    [1200, 1400, 1600],
-    [1200],
-    [1200, 1400],
-    [1200, 1400, 1600],
-    [1200, 1400, 1600],
+    # [1200, 1400, 1600],
+    # [1200],
+    # [1200, 1400],
+    # [1200, 1400, 1600],
+    # [1200, 1400, 1600],
     [1200],
     [1200, 1400],
     [1200, 1400, 1600]
 ]
 
 to_paths = [
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adi_bsp",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adi_morb_f1200",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adi_morb_f1400",
-    "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/adi_morb_f1600",
-    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_bsp",
-    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_morb_f1200",
-    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_morb_f1400",
-    # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kep_morb_f1600",
+    # "/Users/scotthull/Downloads/adibekyan/HeFESTo_Input_Files/bsp",
+    # "/Users/scotthull/Downloads/adibekyan/HeFESTo_Input_Files/morb/f1200",
+    # "/Users/scotthull/Downloads/adibekyan/HeFESTo_Input_Files/morb/f1400",
+    # "/Users/scotthull/Downloads/adibekyan/HeFESTo_Input_Files/morb/f1600",
+    # "/Users/scotthull/Downloads/kepler/HeFESTo_Input_Files/bsp",
+    "/Users/scotthull/Downloads/kepler/HeFESTo_Input_Files/morb/f1200",
+    "/Users/scotthull/Downloads/kepler/HeFESTo_Input_Files/morb/f1400",
+    "/Users/scotthull/Downloads/kepler/HeFESTo_Input_Files/morb/f1600",
 ]
 
 for index, path in enumerate(df_paths):

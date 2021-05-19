@@ -115,10 +115,9 @@ def reformat_data(data, element_1, element_2):
     return df
 
 
-def regression(df, element_1, element_2):
+def regression(df, element_1, element_2, regression_headers_x):
     element_1 = element_1[0:2].lower()
     element_2 = element_2[0:2].lower()
-    regression_headers_x = ['bsp_temp', 'morb_f_temp', 'morb_temp', '{}/{}'.format(element_1, element_2)]
     print("X: ", regression_headers_x)
     X = df[regression_headers_x]
     Y = df['final_density']
@@ -132,12 +131,24 @@ def regression(df, element_1, element_2):
     predictions = model.predict(X)
     print_model = model.summary()
     print(print_model)
-    return regr.coef_
+    d = {}
+    for index, i in enumerate(regression_headers_x):
+        d.update({i: regr.coef_[index]})
+    return d, regr.intercept_
 
 
-def predict(variables, coefficients):
-    y = [x * y for x, y in zip(coefficients, variables)]
+def predict(intercept, input_df, coefficients):
+    y = []
+    input_vars = list(input_df.keys())
+    for row in input_df.index:
+        s = 0
+        for i in input_vars:
+            coeff = coefficients[i]
+            val = input_df[i][row]
+            s += coeff * val
+        y.append(s + intercept)
     return y
+
 
 
 composition_path = "C:/Users/Scott/Desktop/3_26_2021/summary"
@@ -171,5 +182,7 @@ all_morb_data = [item for sublist in all_morb_data for item in sublist]
 
 reform_df_bsp = reformat_data(data=all_bsp_data, element_1=element_1, element_2=element_2)
 reform_df_morb = reformat_data(data=all_morb_data, element_1=element_1, element_2=element_2)
-bsp_coeffs = regression(df=reform_df_bsp, element_1=element_1, element_2=element_2)
-morb_coeffs = regression(df=reform_df_morb, element_1=element_1, element_2=element_2)
+bsp_coeffs, bsp_intercept = regression(df=reform_df_bsp, element_1=element_1, element_2=element_2,
+                        regression_headers_x=regression_dependent_variables)
+morb_coeffs, morb_intercept = regression(df=reform_df_morb, element_1=element_1, element_2=element_2,
+                         regression_headers_x=regression_dependent_variables)
