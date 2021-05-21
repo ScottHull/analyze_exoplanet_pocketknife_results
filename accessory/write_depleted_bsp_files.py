@@ -11,6 +11,7 @@ run_name = "kepler"
 base_path = "C:/Users/Scott/Desktop/3_26_2021/summary/"
 bsp_composition_file = base_path + "{}_BSP_Compositions.csv".format(run_name)
 morb_file_template = base_path + "{}_f{}_MORB_Compositions.csv"
+morb_mgo_correction = 0.646022142
 
 bsp_chem_df = pd.read_csv(bsp_composition_file, index_col="Star")
 bsp_oxides = list(bsp_chem_df.keys())
@@ -31,7 +32,11 @@ for ftemp in morb_f_temperatures:
             depleted_bsp_oxide_wt_pct = {}
             for o in bsp_oxides:
                 bsp_oxide_mass.update({o: bsp_chem_df[o][star]})
-                morb_oxide_mass.update({o: (morb_chem_df[o][star] / 100.0) * morb_chem_df['Mass'][star]})
+                if not o == "MgO":
+                    morb_oxide_mass.update({o: (morb_chem_df[o][star] / 100.0) * morb_chem_df['Mass'][star]})
+                else:
+                    morb_oxide_mass.update(
+                        {o: ((morb_chem_df[o][star] / morb_mgo_correction) / 100.0) * morb_chem_df['Mass'][star]})
                 depleted_oxide_mass.update({o: bsp_oxide_mass[o] - morb_oxide_mass[o]})
             depleted_sum = sum(depleted_oxide_mass.values())
             for o in bsp_oxides:
@@ -39,7 +44,3 @@ for ftemp in morb_f_temperatures:
             line = ",".join(str(depleted_bsp_oxide_wt_pct[o]) for o in bsp_oxides)
             depleted_bsp_outfile.write(star + "," + line + "\n")
     depleted_bsp_outfile.close()
-
-
-
-
