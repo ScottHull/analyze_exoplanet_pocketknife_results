@@ -152,8 +152,8 @@ df_paths = [
     # "/Users/scotthull/Downloads/adibekyan/morb/f1600/MORB_Recalc_Bulkfile.csv",
     # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_bsp_compositions.csv",
     # "/Users/scotthull/Downloads/kepler/morb/f1200/MORB_Recalc_Bulkfile.csv",
-    "C:/Users/Scott/Desktop/3_26_2021/summary/adibekyan_Depleted_BSP_f1400.csv",
-    "C:/Users/Scott/Desktop/3_26_2021/summary/adibekyan_Depleted_BSP_f1600.csv",
+    "C:/Users/Scott/Desktop/3_26_2021/summary/kepler_Depleted_BSP_f1400.csv",
+    "C:/Users/Scott/Desktop/3_26_2021/summary/kepler_Depleted_BSP_f1600.csv",
 ]
 
 temperatures = [
@@ -173,8 +173,8 @@ to_paths = [
     # "/Users/scotthull/Downloads/adibekyan/HeFESTo_Input_Files/morb/f1400",
     # "/Users/scotthull/Downloads/adibekyan/HeFESTo_Input_Files/morb/f1600",
     # "/Users/scotthull/Downloads/kepler/HeFESTo_Input_Files/bsp",
-    "C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_input_files/depleted_bsp/f1400",
-    "C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_input_files/depleted_bsp/f1600",
+    "C:/Users/Scott/Desktop/3_26_2021/kepler/hefesto_input_files/depleted_bsp/f1400",
+    "C:/Users/Scott/Desktop/3_26_2021/kepler/hefesto_input_files/depleted_bsp/f1600",
 ]
 
 for index, path in enumerate(df_paths):
