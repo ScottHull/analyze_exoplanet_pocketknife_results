@@ -37,14 +37,17 @@ def get_composition_file(path_to_folder, material, F_temperature, runs=None):
     if runs is None:
         runs = ["kepler", "adibekyan"]
     for index, run in enumerate(runs):
+        bulk_planet = path_to_folder + "/{}_si_na_corrected_star_compositions.csv".format(run.lower())
         bsp_template = path_to_folder + "/{}_{}_Compositions.csv".format(run.lower(), material.upper())
         morb_template = path_to_folder + "/{}_f{}_{}_Compositions.csv".format(run.lower(), F_temperature,
                                                                               material.upper())
         selected = None
         if material.lower() == "bsp":
             selected = bsp_template
-        else:
+        elif material.lower() == "morb":
             selected = morb_template
+        else:
+            selected = bulk_planet
         if index == 0:
             df = pd.read_csv(selected)
             df['run'] = ['kepler' for i in range(0, len(list(df['Star'])))]
@@ -135,6 +138,7 @@ fig_bsp, axs_bsp = plt.subplots(2, 2, figsize=(16, 9), facecolor='w', edgecolor=
 fig_morb, axs_morb = plt.subplots(2, 2, figsize=(16, 9), facecolor='w', edgecolor='k')
 
 c_bsp = get_composition_file(path_to_folder=composition_path, material="bsp", F_temperature="")
+c_planet = get_composition_file(path_to_folder=composition_path, material="planet", F_temperature="")
 for index, r in enumerate(runs):
     bsp_temp, morb_f_temp, morb_temp = r[0], r[1], r[2]
     c_morb = get_composition_file(path_to_folder=composition_path, material="morb", F_temperature=morb_f_temp)
@@ -142,10 +146,14 @@ for index, r in enumerate(runs):
                          morb_F_temperature=morb_f_temp, morb_temperature=morb_temp)
     data_bsp = get_data(element_1=element_1, element_2=element_2, composition=c_bsp, density=d)
     data_morb = get_data(element_1=element_1, element_2=element_2, composition=c_morb, density=d)
+    data_planet = get_data(element_1=element_1, element_2=element_2, composition=c_planet, density=d)
     plot(data=data_bsp, bsp_temp=bsp_temp, morb_f_temp=morb_f_temp, morb_temp=morb_temp,
          element_1=element_1, element_2=element_2, compostion_relative_to="BSP", fig=fig_bsp, ax=axs_bsp, index=index)
     plot(data=data_morb, bsp_temp=bsp_temp, morb_f_temp=morb_f_temp, morb_temp=morb_temp,
          element_1=element_1, element_2=element_2, compostion_relative_to="MORB", fig=fig_morb, ax=axs_morb,
+         index=index)
+    plot(data=data_morb, bsp_temp=bsp_temp, morb_f_temp=morb_f_temp, morb_temp=morb_temp,
+         element_1=element_1, element_2=element_2, compostion_relative_to="BULK PLANET", fig=fig_morb, ax=axs_morb,
          index=index)
 
 plt.show()
