@@ -7,7 +7,7 @@ morb_f_temperatures = [
     1600
 ]
 
-run_name = "kepler"
+run_name = "adibekyan"
 base_path = "C:/Users/Scott/Desktop/3_26_2021/summary/"
 bsp_composition_file = base_path + "{}_BSP_Compositions.csv".format(run_name)
 morb_file_template = base_path + "{}_f{}_MORB_Compositions.csv"
@@ -27,16 +27,22 @@ for ftemp in morb_f_temperatures:
     for star in bsp_chem_df.index:
         if star in morb_chem_df.index.tolist():
             bsp_oxide_mass = {}
+            morb_oxide_wt_pct_no_mgo_corr = {}
             morb_oxide_mass = {}
             depleted_oxide_mass = {}
             depleted_bsp_oxide_wt_pct = {}
             for o in bsp_oxides:
-                bsp_oxide_mass.update({o: bsp_chem_df[o][star]})
-                if not o == "MgO":
-                    morb_oxide_mass.update({o: (morb_chem_df[o][star] / 100.0) * morb_chem_df['Mass'][star]})
+                if o != "MgO":
+                    morb_oxide_wt_pct_no_mgo_corr.update({o: morb_chem_df[o][star]})
                 else:
-                    morb_oxide_mass.update(
-                        {o: ((morb_chem_df[o][star] / morb_mgo_correction) / 100.0) * morb_chem_df['Mass'][star]})
+                    morb_oxide_wt_pct_no_mgo_corr.update({o: morb_chem_df[o][star] / morb_mgo_correction})
+            total = sum(morb_oxide_wt_pct_no_mgo_corr.values())
+            for o in bsp_oxides:
+                morb_oxide_wt_pct_no_mgo_corr[o] = (morb_oxide_wt_pct_no_mgo_corr[o] / total) * 100
+            for o in bsp_oxides:
+                bsp_oxide_mass.update({o: bsp_chem_df[o][star]})
+                morb_oxide_mass.update(
+                    {o: (morb_oxide_wt_pct_no_mgo_corr[o] / 100.0) * morb_chem_df['Mass'][star]})
                 depleted_oxide_mass.update({o: bsp_oxide_mass[o] - morb_oxide_mass[o]})
             depleted_sum = sum(depleted_oxide_mass.values())
             for o in bsp_oxides:
