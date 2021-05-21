@@ -42,7 +42,7 @@ class _OxideWeights:
         self.na2o = (self.atomic_weights.na * self.oxide_cation_numbers.na) + self.atomic_weights.o
 
 
-class HeFESTpFileWriter:
+class HeFESToFileWriter:
 
     def __init__(self, from_path, to_path, temperatures, material):
         self.df = pd.read_csv(from_path)
@@ -151,9 +151,9 @@ df_paths = [
     # "/Users/scotthull/Downloads/adibekyan/morb/f1400/MORB_Recalc_Bulkfile.csv",
     # "/Users/scotthull/Downloads/adibekyan/morb/f1600/MORB_Recalc_Bulkfile.csv",
     # "/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/depleted-lithosphere/kepler_bsp_compositions.csv",
-    "/Users/scotthull/Downloads/kepler/morb/f1200/MORB_Recalc_Bulkfile.csv",
-    "/Users/scotthull/Downloads/kepler/morb/f1400/MORB_Recalc_Bulkfile.csv",
-    "/Users/scotthull/Downloads/kepler/morb/f1600/MORB_Recalc_Bulkfile.csv",
+    # "/Users/scotthull/Downloads/kepler/morb/f1200/MORB_Recalc_Bulkfile.csv",
+    "C:/Users/Scott/Desktop/3_26_2021/summary/adibekyan_Depleted_BSP_f1400.csv",
+    "C:/Users/Scott/Desktop/3_26_2021/summary/adibekyan_Depleted_BSP_f1600.csv",
 ]
 
 temperatures = [
@@ -162,7 +162,7 @@ temperatures = [
     # [1200, 1400],
     # [1200, 1400, 1600],
     # [1200, 1400, 1600],
-    [1200],
+    # [1200],
     [1200, 1400],
     [1200, 1400, 1600]
 ]
@@ -173,15 +173,14 @@ to_paths = [
     # "/Users/scotthull/Downloads/adibekyan/HeFESTo_Input_Files/morb/f1400",
     # "/Users/scotthull/Downloads/adibekyan/HeFESTo_Input_Files/morb/f1600",
     # "/Users/scotthull/Downloads/kepler/HeFESTo_Input_Files/bsp",
-    "/Users/scotthull/Downloads/kepler/HeFESTo_Input_Files/morb/f1200",
-    "/Users/scotthull/Downloads/kepler/HeFESTo_Input_Files/morb/f1400",
-    "/Users/scotthull/Downloads/kepler/HeFESTo_Input_Files/morb/f1600",
+    "C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_input_files/depleted_bsp/f1400",
+    "C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_input_files/depleted_bsp/f1600",
 ]
 
 for index, path in enumerate(df_paths):
     temps = temperatures[index]
     to_path = to_paths[index]
-    if "bsp" in path:
-        HeFESTpFileWriter(from_path=path, to_path=to_path, temperatures=temps, material="BSP").writefiles()
+    if "bsp" in path or "BSP" in path:
+        HeFESToFileWriter(from_path=path, to_path=to_path, temperatures=temps, material="BSP").writefiles()
     else:
-        HeFESTpFileWriter(from_path=path, to_path=to_path, temperatures=temps, material="MORB").writefiles()
+        HeFESToFileWriter(from_path=path, to_path=to_path, temperatures=temps, material="MORB").writefiles()
