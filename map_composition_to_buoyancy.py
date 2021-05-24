@@ -6,8 +6,11 @@ from src.atomic import Convert
 runs = [
     (1600, 1600, 1600),
     (1600, 1600, 1400),
+    (1600, 1600, 1200),
     (1600, 1400, 1400),
+    (1600, 1400, 1200),
     (1400, 1400, 1400),
+    (1400, 1400, 1200),
 ]
 
 
@@ -121,7 +124,7 @@ def plot(fig, ax, index, data, bsp_temp, morb_f_temp, morb_temp, element_1, elem
     element_2 = element_2[0:2].capitalize()
     # ax[index].set_xlabel("{}/{} ({})".format(element_1, element_2, compostion_relative_to))
     # ax[index].set_ylabel("Specific Buoyancy @ 573.68 km")
-    ax[index].set_title("BSP {} K, MORB F{} K @ {} K".format(bsp_temp, morb_f_temp, morb_temp))
+    ax[index].set_title("BSP {}K, MORB F{}K @ {}K".format(bsp_temp, morb_f_temp, morb_temp))
     ax[index].grid()
     fig.supxlabel("{}/{} ({})".format(element_1, element_2, compostion_relative_to))
     fig.supylabel("Specific Buoyancy @ 573.68 km")
@@ -131,11 +134,11 @@ def plot(fig, ax, index, data, bsp_temp, morb_f_temp, morb_temp, element_1, elem
 
 composition_path = "C:/Users/Scott/Desktop/3_26_2021/summary"
 density_path = composition_path + "/specific_buoyancy"
-element_1 = "Al2O3"
+element_1 = "SiO2"
 element_2 = "FeO"
 
-fig_bsp, axs_bsp = plt.subplots(2, 2, figsize=(16, 9), facecolor='w', edgecolor='k')
-fig_morb, axs_morb = plt.subplots(2, 2, figsize=(16, 9), facecolor='w', edgecolor='k')
+fig_bsp, axs_bsp = plt.subplots(2, 4, figsize=(20, 10), facecolor='w', edgecolor='k')
+fig_morb, axs_morb = plt.subplots(2, 4, figsize=(20, 10), facecolor='w', edgecolor='k')
 
 c_bsp = get_composition_file(path_to_folder=composition_path, material="bsp", F_temperature="")
 c_planet = get_composition_file(path_to_folder=composition_path, material="planet", F_temperature="")
@@ -146,14 +149,14 @@ for index, r in enumerate(runs):
                          morb_F_temperature=morb_f_temp, morb_temperature=morb_temp)
     data_bsp = get_data(element_1=element_1, element_2=element_2, composition=c_bsp, density=d)
     data_morb = get_data(element_1=element_1, element_2=element_2, composition=c_morb, density=d)
-    data_planet = get_data(element_1=element_1, element_2=element_2, composition=c_planet, density=d)
+    # data_planet = get_data(element_1=element_1, element_2=element_2, composition=c_planet, density=d)
     plot(data=data_bsp, bsp_temp=bsp_temp, morb_f_temp=morb_f_temp, morb_temp=morb_temp,
          element_1=element_1, element_2=element_2, compostion_relative_to="BSP", fig=fig_bsp, ax=axs_bsp, index=index)
     plot(data=data_morb, bsp_temp=bsp_temp, morb_f_temp=morb_f_temp, morb_temp=morb_temp,
          element_1=element_1, element_2=element_2, compostion_relative_to="MORB", fig=fig_morb, ax=axs_morb,
          index=index)
-    plot(data=data_morb, bsp_temp=bsp_temp, morb_f_temp=morb_f_temp, morb_temp=morb_temp,
-         element_1=element_1, element_2=element_2, compostion_relative_to="BULK PLANET", fig=fig_morb, ax=axs_morb,
-         index=index)
+    # plot(data=data_morb, bsp_temp=bsp_temp, morb_f_temp=morb_f_temp, morb_temp=morb_temp,
+    #      element_1=element_1, element_2=element_2, compostion_relative_to="BULK PLANET", fig=fig_morb, ax=axs_morb,
+    #      index=index)
 
 plt.show()

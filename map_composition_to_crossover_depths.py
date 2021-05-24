@@ -7,8 +7,11 @@ from src.atomic import Convert
 runs = [
     (1600, 1600, 1600),
     (1600, 1600, 1400),
+    (1600, 1600, 1200),
     (1600, 1400, 1400),
+    (1600, 1400, 1200),
     (1400, 1400, 1400),
+    (1400, 1400, 1200),
 ]
 
 
@@ -139,11 +142,11 @@ def plot(fig, ax, index, data, bsp_temp, morb_f_temp, morb_temp, element_1, elem
 
 composition_path = "C:/Users/Scott/Desktop/3_26_2021/summary"
 density_path = composition_path + "/specific_buoyancy"
-element_1 = "MgO"
+element_1 = "Al2O3"
 element_2 = "FeO"
 
-fig_bsp, axs_bsp = plt.subplots(2, 2, figsize=(16, 9), facecolor='w', edgecolor='k')
-fig_morb, axs_morb = plt.subplots(2, 2, figsize=(16, 9), facecolor='w', edgecolor='k')
+fig_bsp, axs_bsp = plt.subplots(2, 4, figsize=(20, 10), facecolor='w', edgecolor='k')
+fig_morb, axs_morb = plt.subplots(2, 4, figsize=(20, 10), facecolor='w', edgecolor='k')
 
 c_bsp = get_composition_file(path_to_folder=composition_path, material="bsp", F_temperature="")
 for index, r in enumerate(runs):

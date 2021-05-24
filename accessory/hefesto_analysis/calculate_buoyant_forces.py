@@ -68,13 +68,13 @@ class BuoyantForces:
 runs = [
     (1600, 1600, 1600),
     (1600, 1600, 1400),
-    # (1600, 1600, 1200),
+    (1600, 1600, 1200),
     (1600, 1400, 1400),
-    # (1600, 1400, 1200),
+    (1600, 1400, 1200),
     # (1600, 1200, 1200),
 
     (1400, 1400, 1400),
-    # (1400, 1400, 1200),
+    (1400, 1400, 1200),
     # (1400, 1200, 1200),
 
     # (1200, 1200, 1200),
@@ -84,8 +84,8 @@ for r in runs:
     bsp_temp, morb_f_temp, morb_temp = r
 
     BuoyantForces(
-        name="Kepler_BSP_{}_MORB_F{}_{}".format(bsp_temp, morb_f_temp, morb_temp),
-        bsp_path="C:/Users/Scott/Desktop/3_26_2021/kepler/hefesto_output_files/csv/bsp/{}".format(bsp_temp),
-        morb_path="C:/Users/Scott/Desktop/3_26_2021/kepler/hefesto_output_files/csv/morb/f{}/{}".format(morb_f_temp,
+        name="Adibekyan_BSP_{}_MORB_F{}_{}".format(bsp_temp, morb_f_temp, morb_temp),
+        bsp_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/csv/bsp/{}".format(bsp_temp),
+        morb_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/csv/morb/f{}/{}".format(morb_f_temp,
                                                                                                         morb_temp)
     ).calculate(gravity=9.8)
