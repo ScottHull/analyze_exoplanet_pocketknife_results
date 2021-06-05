@@ -43,7 +43,12 @@ class HeFESToReformat:
         self.__walk()
 
 
+# HeFESToReformat(
+#     from_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/raw/morb/adibekyan_morb_f1600_HeFESTo_Output_Files",
+#     to_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/csv/morb/f1600"
+# ).reformat()
+
 HeFESToReformat(
-    from_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/raw/morb/adibekyan_morb_f1600_HeFESTo_Output_Files",
-    to_path="C:/Users/Scott/Desktop/3_26_2021/adibekyan/hefesto_output_files/csv/morb/f1600"
+    from_path="C:/Users/Scott/Desktop/kep_depleted_lithosphere/kep_dl_f1400_HeFESTo_Output_Files",
+    to_path="C:/Users/Scott/Desktop/kep_dl_csv/f1400"
 ).reformat()
